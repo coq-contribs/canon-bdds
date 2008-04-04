@@ -1,0 +1,43 @@
+(***************************************************************************)
+(***************************************************************************)
+(*                   Canonicity of Binary Decision Dags                    *)
+(*                                                                         *)
+(*                              Coq V5.8                                   *)
+(*                                                                         *)
+(*       E. Ledinot                                                        *) 
+(*       Dassault-Aviation                                                 *)
+(*       March 1993  Coq V5.8                                              *)
+(*                                                                         *)
+(*       On grant MRE 92.S.0764                                            *)
+(*                                                                         *)
+(***************************************************************************)
+(*       Ported by G. Huet in Coq V5.10 in May 1995                        *)
+(***************************************************************************)
+
+
+    The property of canonicity is first proved for Shannon Trees (file BDTs.v)
+because they are inductively definable in Coq and thus easily manageable.
+    However the proofs of the key lemmas (vars_sup_dim_non_dep,
+OBDT_eq_Fun_eq and Fun_eq_OBDT_eq) are carried out without using structural 
+induction on values of type BDT (Binary Decision Trees) since structural
+induction will no longer be available for Dags. Proofs are systematically 
+done by induction on the order of the greatest dependant variable because
+this notion can be used both for Trees and Dags.
+
+    The file BDTs is intended to be an introduction and a guide to the 
+forthcoming file BDDs.v and a complete formalization of the proof of 
+K.L Mc Millan in his PhD Thesis:
+    "Symbolic Model Checking: An approach to the state explosion problem"
+                      CMU-CS-92-131    May 1992.
+
+    The file set0.v contains general lemmas mainly on finite sets. They are
+not all strictly necessary. For instance not_All_Exist_not is used only
+to prove the equivalence between the two definitions of Dependant Variables
+(Dep_Var and Dep_Var' in Boolean_functions.v) the second one being superfluous
+though in some cases more convenient than the first one. 
+    This development contains a few digressions for sake of local completeness
+or because some extra lemmas were found interesting to be proved.
+
+
+
+
