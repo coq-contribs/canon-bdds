@@ -19,7 +19,7 @@ Require Export Le.
 Require Export Gt.
 Require Export Prelude0.
 Require Export Prelude1.
-Require Export bdd.canonicite.Finite_sets.
+Require Export CanonBDDs.canonicite.Finite_sets.
 Require Export Vars.
 
 

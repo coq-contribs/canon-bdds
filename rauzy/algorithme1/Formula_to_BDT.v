@@ -14,8 +14,8 @@
 (****************************************************************************)
 
 Require Import Prelude_BDT.
-Require Import bdd.rauzy.algorithme1.Boolean_functions.
-Require Import bdd.rauzy.algorithme1.BDTs.
+Require Import CanonBDDs.rauzy.algorithme1.Boolean_functions.
+Require Import CanonBDDs.rauzy.algorithme1.BDTs.
 Require Import Inductions.
 
 

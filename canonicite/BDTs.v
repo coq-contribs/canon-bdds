@@ -9,7 +9,7 @@
 (*                                  BDTs.v                                  *)
 (****************************************************************************)
 
-Require Import bdd.canonicite.Boolean_functions.
+Require Import CanonBDDs.canonicite.Boolean_functions.
 Require Import Vars.
 
 Inductive BDT (n : nat) : Set :=

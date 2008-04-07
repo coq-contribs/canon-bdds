@@ -13,7 +13,7 @@
 
 
 Require Import Prelude_BDT.
-Require Import bdd.rauzy.algorithme1.BDTs.
+Require Import CanonBDDs.rauzy.algorithme1.BDTs.
 
 
 (*-----------   Measure on couples of BDTs  for termination    -------------*)

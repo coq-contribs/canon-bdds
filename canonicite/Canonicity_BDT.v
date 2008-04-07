@@ -11,8 +11,8 @@
 (*                             Canonicity_BDT.v                             *)
 (****************************************************************************)
 
-Require Import bdd.canonicite.Boolean_functions.
-Require Import bdd.canonicite.BDTs.
+Require Import CanonBDDs.canonicite.Boolean_functions.
+Require Import CanonBDDs.canonicite.BDTs.
 Require Import Complete_induction.
 
 Parameter n : nat.

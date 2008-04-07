@@ -18,7 +18,7 @@ Require Import Compare.
 Require Import Le.
 Require Import Gt.
 Require Import Prelude1.
-Require Import bdd.canonicite.Finite_sets.
+Require Import CanonBDDs.canonicite.Finite_sets.
 
 Section Intervals.
 
