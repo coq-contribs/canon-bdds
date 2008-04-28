@@ -4,6 +4,6 @@ Author: Emmanuel Ledinot
 Institution: Dassault-Aviation
 Description: A proof of unicity and canonicity of Binary Decision Trees and
  Binary Decision Dags. This contrib contains also a development on finite sets.
-Keywords: BDD BDT Finite Sets Model-Checking
+Keywords: BDD, BDT, Finite Sets, Model-Checking, binary decision diagrams
 Category: Computer Science/Decision Procedures and Certified Algorithms/Decision procedures
 Category: Miscellaneous/Extracted Programs/Decision procedures
