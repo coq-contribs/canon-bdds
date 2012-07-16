@@ -12,6 +12,8 @@
 
 (* Uses Axiom  Classic : (A:Prop)~(~A)->A. *)
 
+Global Set Asymmetric Patterns.
+
 Require Export Bool. 
 Require Export Compare.
 Require Export Compare_dec.

@@ -10,6 +10,8 @@
 (*                                Prelude0.v                                *)
 (****************************************************************************)
 
+Global Set Asymmetric Patterns.
+
 (* ought to be integrated in SYSTEM libraries *)
 
 Lemma Contra : forall P Q : Prop, (P -> Q) -> ~ Q -> ~ P.
