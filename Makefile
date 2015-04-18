@@ -84,23 +84,17 @@ COQSRCLIBS?=-I "$(COQLIB)kernel" -I "$(COQLIB)lib" \
   -I "$(COQLIB)/plugins/cc" \
   -I "$(COQLIB)/plugins/decl_mode" \
   -I "$(COQLIB)/plugins/derive" \
-  -I "$(COQLIB)/plugins/dp" \
   -I "$(COQLIB)/plugins/extraction" \
-  -I "$(COQLIB)/plugins/field" \
   -I "$(COQLIB)/plugins/firstorder" \
   -I "$(COQLIB)/plugins/fourier" \
   -I "$(COQLIB)/plugins/funind" \
-  -I "$(COQLIB)/plugins/groebner" \
-  -I "$(COQLIB)/plugins/interface" \
   -I "$(COQLIB)/plugins/micromega" \
   -I "$(COQLIB)/plugins/nsatz" \
   -I "$(COQLIB)/plugins/omega" \
   -I "$(COQLIB)/plugins/quote" \
-  -I "$(COQLIB)/plugins/ring" \
   -I "$(COQLIB)/plugins/romega" \
   -I "$(COQLIB)/plugins/rtauto" \
   -I "$(COQLIB)/plugins/setoid_ring" \
-  -I "$(COQLIB)/plugins/subtac" \
   -I "$(COQLIB)/plugins/syntax" \
   -I "$(COQLIB)/plugins/xml"
 ZFLAGS=$(OCAMLLIBS) $(COQSRCLIBS) -I $(CAMLP4LIB)
@@ -113,7 +107,7 @@ GRAMMARS?=grammar.cma
 ifeq ($(CAMLP4),camlp5)
 CAMLP4EXTEND=pa_extend.cmo q_MLast.cmo pa_macro.cmo unix.cma threads.cma
 else
-CAMLP4EXTEND=
+CAMLP4EXTEND=threads.cma
 endif
 PP?=-pp '$(CAMLP4O) -I $(CAMLLIB) -I $(CAMLLIB)threads/ $(COQSRCLIBS) compat5.cmo \
   $(CAMLP4EXTEND) $(GRAMMARS) $(CAMLP4OPTIONS) -impl'

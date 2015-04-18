@@ -9,17 +9,17 @@ OBJ_I = suresnes.cmi \
 	parser.cmi
 
 OBJ= 	suresnes.cmx \
- 	lexer.cmx \
+	lexer.cmx \
 	parser.cmx \
 	main.cmx \
- 
+
 PROG= suresnes
 
 
 all : 	$(PROG)
 
-$(PROG) :  $(OBJ_I) $(OBJ)	
-	$(CC) $(FLAGS) -o $(PROG) $(LIB) $(OBJ) 
+$(PROG) :  $(OBJ_I) $(OBJ)
+	$(CC) $(FLAGS) -o $(PROG) $(LIB) $(OBJ)
 
 parser.ml parser.mli : parser.mly
 	$(YACC) parser.mly
@@ -31,13 +31,17 @@ lexer.ml : lexer.mll
 	$(CC) -c $<
 
 %.cmx : %.ml
-	$(CC) -c $<	 
+	$(CC) -c $<
 
-clean : 	
-	rm -f *.o *.cmx *.cmi \
+%.ml.d : %.ml
+	$(CAMLBIN)ocamldep $< > $@
+
+clean :
+	rm -f *.o *.ml.d *.cmx *.cmi \
 	$(PROG) \
 	suresnes.ml \
 	lexer.ml \
 	parser.ml \
 	parser.mli
 
+include $(OBJ:.cmx=.ml.d)
