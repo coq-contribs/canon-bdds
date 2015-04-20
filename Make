@@ -16,11 +16,12 @@ rauzy/algorithme1/Boolean_functions.v
 rauzy/algorithme1/BDTs.v
 -extra rauzy/algorithme1/extraction/suresnes.ml rauzy/algorithme1/Formula_to_BDT.vo "$(COQBIN)coqtop $(COQFLAGS) -silent -batch -load-vernac-source rauzy/algorithme1/extract.v"
 -extra rauzy/algorithme1/extraction/suresnes rauzy/algorithme1/extraction/suresnes.ml
-       "cd ./rauzy/algorithme1/extraction ; $(MAKE) all"
+       "$(MAKE) -C rauzy/algorithme1/extraction all"
 -extra test rauzy/algorithme1/extraction/suresnes
        "@echo '***** test: checking the tautology ztwaalf1_be *****'
 	./rauzy/algorithme1/extraction/suresnes rauzy/algorithme1/extraction/ztwaalf1_be
 	@echo '******************** End of test ***********************'"
+-extra-phony clean "" "$(MAKE) -C rauzy/algorithme1/extraction clean"
 rauzy/algorithmes_2_et_3/Primes.v
 rauzy/algorithmes_2_et_3/Prelude_Primes.v
 rauzy/algorithmes_2_et_3/Prelude_Paths.v

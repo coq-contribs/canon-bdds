@@ -220,7 +220,7 @@ beautify: $(VFILES:=.beautified)
 	@echo 'Do not do "make clean" until you are sure that everything went well!'
 	@echo 'If there were a problem, execute "for file in $$(find . -name \*.v.old -print); do mv $${file} $${file%.old}; done" in your shell/'
 
-.PHONY: all archclean beautify byte clean cleanall gallina gallinahtml html install install-doc install-natdynlink install-toploop opt printenv quick uninstall userinstall validate vio2vo
+.PHONY: all archclean beautify byte clean cleanall gallina gallinahtml html install install-doc install-natdynlink install-toploop opt printenv quick uninstall userinstall validate vio2vo clean
 
 ###################
 #                 #
@@ -228,13 +228,16 @@ beautify: $(VFILES:=.beautified)
 #                 #
 ###################
 
+clean:: 
+	$(MAKE) -C rauzy/algorithme1/extraction clean
+
 test: rauzy/algorithme1/extraction/suresnes
 	@echo '***** test: checking the tautology ztwaalf1_be *****'
 	./rauzy/algorithme1/extraction/suresnes rauzy/algorithme1/extraction/ztwaalf1_be
 	@echo '******************** End of test ***********************'
 
 rauzy/algorithme1/extraction/suresnes: rauzy/algorithme1/extraction/suresnes.ml
-	cd ./rauzy/algorithme1/extraction ; $(MAKE) all
+	$(MAKE) -C rauzy/algorithme1/extraction all
 
 rauzy/algorithme1/extraction/suresnes.ml: rauzy/algorithme1/Formula_to_BDT.vo
 	$(COQBIN)coqtop $(COQFLAGS) -silent -batch -load-vernac-source rauzy/algorithme1/extract.v

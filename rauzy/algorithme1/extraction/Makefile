@@ -18,11 +18,13 @@ PROG= suresnes
 
 all : 	$(PROG)
 
-$(PROG) :  $(OBJ_I) $(OBJ)
+$(PROG) : $(OBJ_I) $(OBJ)
 	$(CC) $(FLAGS) -o $(PROG) $(LIB) $(OBJ)
 
-parser.ml parser.mli : parser.mly
+parser.ml : parser.mly
 	$(YACC) parser.mly
+
+parser.mli : parser.ml
 
 lexer.ml : lexer.mll
 	$(LEX) lexer.mll
@@ -33,7 +35,7 @@ lexer.ml : lexer.mll
 %.cmx : %.ml
 	$(CC) -c $<
 
-%.ml.d : %.ml
+%.ml.d : %.ml | lexer.ml
 	$(CAMLBIN)ocamldep $< > $@
 
 clean :
@@ -44,4 +46,6 @@ clean :
 	parser.ml \
 	parser.mli
 
+ifneq ($(MAKECMDGOALS),clean)
 include $(OBJ:.cmx=.ml.d)
+endif
