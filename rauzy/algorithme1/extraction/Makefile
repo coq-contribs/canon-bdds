@@ -35,7 +35,7 @@ lexer.ml : lexer.mll
 %.cmx : %.ml
 	$(CC) -c $<
 
-%.ml.d : %.ml | lexer.ml
+%.ml.d : %.ml | lexer.ml parser.ml
 	$(CAMLBIN)ocamldep $< > $@
 
 clean :
