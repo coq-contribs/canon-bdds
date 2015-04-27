@@ -5,9 +5,6 @@ LIB= unix.cmxa
 LEX= $(CAMLBIN)ocamllex
 YACC= $(CAMLBIN)ocamlyacc
 
-OBJ_I = suresnes.cmi \
-	parser.cmi
-
 OBJ= 	suresnes.cmx \
 	lexer.cmx \
 	parser.cmx \
@@ -18,13 +15,15 @@ PROG= suresnes
 
 all : 	$(PROG)
 
-$(PROG) : $(OBJ_I) $(OBJ)
+$(PROG) : $(OBJ)
 	$(CC) $(FLAGS) -o $(PROG) $(LIB) $(OBJ)
 
 parser.ml : parser.mly
 	$(YACC) parser.mly
 
 parser.mli : parser.ml
+
+parser.cmi : suresnes.cmi
 
 lexer.ml : lexer.mll
 	$(LEX) lexer.mll
@@ -42,6 +41,7 @@ clean :
 	rm -f *.o *.ml.d *.cmx *.cmi \
 	$(PROG) \
 	suresnes.ml \
+	suresnes.mli \
 	lexer.ml \
 	parser.ml \
 	parser.mli
