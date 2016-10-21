@@ -22,13 +22,13 @@ Definition Inf (A1 A2 : Assign) := forall i : nat, A1 i = true -> A2 i = true.
 
 Lemma Inf_refl : forall A : Assign, Inf A A.
 Proof.
-unfold Inf in |- *; auto with v62.
+unfold Inf in |- *; auto with arith.
 Qed.
 
 Lemma Inf_trans :
  forall A1 A2 A3 : Assign, Inf A1 A2 -> Inf A2 A3 -> Inf A1 A3.
 Proof.
-unfold Inf in |- *; auto with v62.
+unfold Inf in |- *; auto with arith.
 Qed.
 
 Lemma Upd_preserves_Inf :
@@ -39,7 +39,7 @@ intros A1 A2 A1_Inf_A2 i b.
 unfold Inf in |- *.
 intro j.
 unfold Inf in A1_Inf_A2.
-unfold Upd in |- *; elim (eq_nat_dec i j); auto with v62.
+unfold Upd in |- *; elim (eq_nat_dec i j); auto with arith.
 Qed.
 
 Lemma Divides_Inf :
@@ -82,8 +82,8 @@ unfold Monotonic in |- *; intro H_f1.
 intros A1 A2 A1_Inf_A2 H1.
 unfold BF_eq in Heq.
 apply trans_equal with (f1 A2);
- [ auto with v62 | apply H_f1 with A1; try assumption ]. 
-apply trans_equal with (f2 A1); auto with v62.
+ [ auto with arith | apply H_f1 with A1; try assumption ]. 
+apply trans_equal with (f2 A1); auto with arith.
 Qed.
 
 
@@ -94,7 +94,7 @@ Proof.
 intros f i b.
 unfold Monotonic, Frestr in |- *; intros f_Mon A1 A2 A1_Inf_A2.
 intro; apply f_Mon with (Upd A1 i b); try assumption.
-apply Upd_preserves_Inf; trivial with v62.
+apply Upd_preserves_Inf; trivial with arith.
 Qed.
 
 Lemma Mon_node_Mon_sons :
@@ -107,12 +107,12 @@ split.
 (*  left  *)
 rewrite (Choice_left i h l).
 apply BF_eq_Mon_Mon with (Frestr (Fun (Node i h l)) i true);
- [ apply Choice_Fun_eq_Fun_Choice; auto with v62
+ [ apply Choice_Fun_eq_Fun_Choice; auto with arith
  | apply Mon_Frestr_Mon; assumption ].
 (*  right *)
 rewrite (Choice_right i h l).
 apply BF_eq_Mon_Mon with (Frestr (Fun (Node i h l)) i false);
- [ apply Choice_Fun_eq_Fun_Choice; auto with v62
+ [ apply Choice_Fun_eq_Fun_Choice; auto with arith
  | apply Mon_Frestr_Mon; assumption ].
 Qed.
 
@@ -124,8 +124,8 @@ unfold BF_eq in |- *; intro A; unfold TRUE in |- *; simpl in |- *.
 elim (Ass_of_well_defined Nil); intros An Def_An.
 unfold Monotonic in H1f.
 apply H1f with An;
- [ apply Anil_lowest; trivial with v62
- | elim (inv_Implicant Nil f H2f); intros Ha Hb; apply Hb; trivial with v62 ].
+ [ apply Anil_lowest; trivial with arith
+ | elim (inv_Implicant Nil f H2f); intros Ha Hb; apply Hb; trivial with arith ].
 Qed.
 
 Lemma Divides_implic_implic :
@@ -141,7 +141,7 @@ intros Ap' Def_Ap'.
 elim (Ass_of_well_defined p); intros Ap Def_Ap.
 unfold Monotonic in Hf; apply Hf with Ap.
 apply Divides_Inf with p p'; try assumption.
-elim (inv_Implicant p f Hp); auto with v62.
+elim (inv_Implicant p f Hp); auto with arith.
 Qed.
 
 Lemma L13 :
@@ -166,11 +166,11 @@ Proof.
 intros i h l HO HM p H1p H2p.
 apply L40 with i l; [ assumption | idtac ].
 apply Divides_implic_implic with p;
- [ assumption | idtac | trivial with v62 | assumption ].
-apply L10; [ apply L11; trivial with v62 | assumption ].
+ [ assumption | idtac | trivial with arith | assumption ].
+apply L10; [ apply L11; trivial with arith | assumption ].
 Qed.
 
 Lemma Fcst_monotonic : forall b : bool, Monotonic (Fcst b).
 Proof.
-unfold Monotonic in |- *; auto with v62.
+unfold Monotonic in |- *; auto with arith.
 Qed.

@@ -115,7 +115,7 @@ apply gt_le_trans with (Maxdim (Choice b1 i false) (Choice b2 i false));
  try assumption; elim Def_i; apply Measure_decrease; 
  assumption.
 split; simpl in |- *.
-rewrite Def_i; auto with v62.
+rewrite Def_i; auto with arith.
 apply Corr_hl_Corr_node; assumption.
 Qed.
 
@@ -126,7 +126,7 @@ Lemma And_BDT_Zero_b2 :
  OBDT b3 /\ Dim b3 <= Dim b2 /\ BF_eq (Fun b3) (AND (Fun Zero) (Fun b2))}.
 Proof.
 intro b2.
-exists Zero; auto with v62.
+exists Zero; auto with arith.
 Qed.
 
 
@@ -137,7 +137,7 @@ Lemma And_BDT_One_b2 :
  OBDT b3 /\ Dim b3 <= Dim b2 /\ BF_eq (Fun b3) (AND (Fun One) (Fun b2))}.
 Proof.
 intros b2 H2.
-exists b2; auto with v62.
+exists b2; auto with arith.
 Qed.
 
 
@@ -148,9 +148,9 @@ Lemma And_BDT_b1_Zero :
 Proof.
 intro b1.
 exists Zero.
-split; try split; auto with v62.
+split; try split; auto with arith.
 apply BF_eq_trans with (f2 := AND FALSE (Fun b1)); try apply Commutative_AND;
- auto with v62.
+ auto with arith.
 Qed.
 
 
@@ -162,10 +162,10 @@ Lemma And_BDT_b1_One :
 Proof.
 intros b1 H1.
 exists b1.
-split; try split; auto with v62.
+split; try split; auto with arith.
 simpl in |- *.
 apply BF_eq_trans with (f2 := AND TRUE (Fun b1)); try apply Commutative_AND;
- auto with v62.
+ auto with arith.
 Qed.
 
 
@@ -182,19 +182,19 @@ pattern b1, b2 in |- *; apply Induction1 with (b1 := b1) (b2 := b2);
  try assumption.
 clear H1 b1 H2 b2; intros b2 H2.
 unfold Maxdim in |- *; elim (le_Max (Dim Zero) (Dim b2));
- [ exact (And_BDT_Zero_b2 b2) | auto with v62 ].
+ [ exact (And_BDT_Zero_b2 b2) | auto with arith ].
 clear H1 b1 H2 b2; intros b2 H2.
 unfold Maxdim in |- *; elim (le_Max (Dim One) (Dim b2));
- [ exact (And_BDT_One_b2 b2 H2) | auto with v62 ].
+ [ exact (And_BDT_One_b2 b2 H2) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 H1.
 unfold Maxdim in |- *; elim Max_sym; elim (le_Max (Dim Zero) (Dim b1));
- [ exact (And_BDT_b1_Zero b1) | auto with v62 ].
+ [ exact (And_BDT_b1_Zero b1) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 H1.
 unfold Maxdim in |- *; elim Max_sym; elim (le_Max (Dim One) (Dim b1));
- [ exact (And_BDT_b1_One b1 H1) | auto with v62 ].
+ [ exact (And_BDT_b1_One b1 H1) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 b2 HO1 HD1 HO2 HD2.
 intros i Def_i Htrue Hfalse.
-apply Op2_BDT_overloaded with i; auto with v62.
+apply Op2_BDT_overloaded with i; auto with arith.
 simple induction b; assumption.
 Qed.
 
@@ -210,7 +210,7 @@ elim (And_BDT_overloaded b1 H1 b2 H2).
 intro b3.
 intro H; elim H; intro H3.
 simple induction 1.
-exists b3; auto with v62.
+exists b3; auto with arith.
 Qed.
 
 Lemma Or_BDT_Zero_b2 :
@@ -220,7 +220,7 @@ Lemma Or_BDT_Zero_b2 :
  OBDT b3 /\ Dim b3 <= Dim b2 /\ BF_eq (Fun b3) (OR (Fun Zero) (Fun b2))}.
 Proof.
 intros b2 H2.
-exists b2; auto with v62.
+exists b2; auto with arith.
 Qed.
 
 
@@ -230,7 +230,7 @@ Lemma Or_BDT_One_b2 :
  OBDT b3 /\ Dim b3 <= Dim b2 /\ BF_eq (Fun b3) (OR (Fun One) (Fun b2))}.
 Proof.
 intros b2.
-exists One; auto with v62.
+exists One; auto with arith.
 Qed.
 
 
@@ -242,10 +242,10 @@ Lemma Or_BDT_b1_Zero :
 Proof.
 intros b1 H1.
 exists b1.
-split; try split; auto with v62.
+split; try split; auto with arith.
 simpl in |- *.
 apply BF_eq_trans with (f2 := OR FALSE (Fun b1)); try apply Commutative_OR;
- auto with v62.
+ auto with arith.
 Qed.
 
 
@@ -256,9 +256,9 @@ Lemma Or_BDT_b1_One :
 Proof.
 intro b1.
 exists One.
-split; try split; auto with v62.
+split; try split; auto with arith.
 apply BF_eq_trans with (f2 := OR TRUE (Fun b1)); try apply Commutative_OR;
- auto with v62.
+ auto with arith.
 Qed.
 
 
@@ -275,19 +275,19 @@ pattern b1, b2 in |- *; apply Induction1 with (b1 := b1) (b2 := b2);
  try assumption.
 clear H1 b1 H2 b2; intros b2 H2.
 unfold Maxdim in |- *; elim (le_Max (Dim Zero) (Dim b2));
- [ exact (Or_BDT_Zero_b2 b2 H2) | auto with v62 ].
+ [ exact (Or_BDT_Zero_b2 b2 H2) | auto with arith ].
 clear H1 b1 H2 b2; intros b2 H2.
 unfold Maxdim in |- *; elim (le_Max (Dim One) (Dim b2));
- [ exact (Or_BDT_One_b2 b2) | auto with v62 ].
+ [ exact (Or_BDT_One_b2 b2) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 H1.
 unfold Maxdim in |- *; elim Max_sym; elim (le_Max (Dim Zero) (Dim b1));
- [ exact (Or_BDT_b1_Zero b1 H1) | auto with v62 ].
+ [ exact (Or_BDT_b1_Zero b1 H1) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 H1.
 unfold Maxdim in |- *; elim Max_sym; elim (le_Max (Dim One) (Dim b1));
- [ exact (Or_BDT_b1_One b1) | auto with v62 ].
+ [ exact (Or_BDT_b1_One b1) | auto with arith ].
 clear H1 b1 H2 b2; intros b1 b2 HO1 HD1 HO2 HD2.
 intros i Def_i Htrue Hfalse.
-apply Op2_BDT_overloaded with i; auto with v62.
+apply Op2_BDT_overloaded with i; auto with arith.
 simple induction b; assumption.
 Qed.
 
@@ -303,7 +303,7 @@ elim (Or_BDT_overloaded b1 H1 b2 H2).
 intro b3.
 intro H; elim H; intro H3.
 simple induction 1.
-exists b3; auto with v62.
+exists b3; auto with arith.
 Qed.
 
 
@@ -317,19 +317,19 @@ Proof.
 simple induction t.
 (*  t = Zero *)
 intro Zero_ordered.
-exists One; simpl in |- *; auto with v62.
+exists One; simpl in |- *; auto with arith.
 (*  t = One *)
 intro One_ordered.
-exists Zero; simpl in |- *; auto with v62.
+exists Zero; simpl in |- *; auto with arith.
 (*  t = Node(i,bh,bl) *)
 intros i bh Hrec_bh bl Hrec_bl Node_ordered.
 elim Hrec_bl;
- [ idtac | elim (ordered_node_ordered_sons i bh bl); auto with v62 ].
+ [ idtac | elim (ordered_node_ordered_sons i bh bl); auto with arith ].
 intro tnot_l.
 simple induction 1; intro tnot_l_ordered; simple induction 1;
  intros H_dimtnot_l H_Funtnot_l.
 elim Hrec_bh;
- [ idtac | elim (ordered_node_ordered_sons i bh bl); auto with v62 ]. 
+ [ idtac | elim (ordered_node_ordered_sons i bh bl); auto with arith ]. 
 intro tnot_h.
 simple induction 1; intro tnot_h_ordered; simple induction 1;
  intros H_dimtnot_h H_Funtnot_h.
@@ -339,33 +339,33 @@ elim (eq_BDT_decidable tnot_h tnot_l).
   (* Case Not left= Not right *)
 intro tnot_h_eq_tnot_l.
 exists tnot_h.
-split; try trivial with v62.
+split; try trivial with arith.
 split; simpl in |- *.
 apply gt_le_weak.
-apply gt_le_trans with (m := Dim bh); auto with v62.
-elim (dim_node_dim_sons i bh bl Node_ordered); auto with v62.
+apply gt_le_trans with (m := Dim bh); auto with arith.
+elim (dim_node_dim_sons i bh bl Node_ordered); auto with arith.
 apply BF_eq_sym.
 apply BF_eq_trans with (f2 := IF F i then NOT (Fun bh) else NOT (Fun bl));
  try apply Commute_if_not.
 unfold BF_eq in |- *; intro A.
 unfold BF_eq in H_Funtnot_h.
 unfold BF_eq in H_Funtnot_l.
-unfold IF_ in |- *; elim (F i A); auto with v62.
-rewrite tnot_h_eq_tnot_l; auto with v62.
+unfold IF_ in |- *; elim (F i A); auto with arith.
+rewrite tnot_h_eq_tnot_l; auto with arith.
   (* Case Not left =/= right *)
 intro tnot_h_neq_tnot_l.
 exists (Node i tnot_h tnot_l).
 split.
 apply order_node; try assumption.
 apply gt_le_trans with (m := Dim bh); try assumption.
-elim (dim_node_dim_sons i bh bl Node_ordered); auto with v62.
+elim (dim_node_dim_sons i bh bl Node_ordered); auto with arith.
 apply gt_le_trans with (m := Dim bl); try assumption.
-elim (dim_node_dim_sons i bh bl Node_ordered); auto with v62.
+elim (dim_node_dim_sons i bh bl Node_ordered); auto with arith.
 simpl in |- *; split; try apply le_n.
 apply BF_eq_sym.
 apply BF_eq_trans with (f2 := IF F i then NOT (Fun bh) else NOT (Fun bl));
  try apply Commute_if_not.
-apply BF_eq_congruence_op3; auto with v62.
+apply BF_eq_congruence_op3; auto with arith.
 Qed.
 
 
@@ -377,21 +377,21 @@ intros t Ht.
 elim (Existence_Not_BDT t Ht).
 intro nt.
 simple induction 1; intro nt_ordered; simple induction 1; intros.
-exists nt; auto with v62.
+exists nt; auto with arith.
 Qed.
 
 
 Lemma Shtree_Tr : {T : BDT | Sh_tree_of Tr T}.
 Proof.
 exists One.
-unfold Sh_tree_of in |- *; auto with v62.
+unfold Sh_tree_of in |- *; auto with arith.
 Qed.
 
 
 Lemma Shtree_Fa : {T : BDT | Sh_tree_of Fa T}.
 Proof.
 exists Zero.
-unfold Sh_tree_of in |- *; auto with v62.
+unfold Sh_tree_of in |- *; auto with arith.
 Qed.
 
 
@@ -400,7 +400,7 @@ Lemma Shtree_Var :
 Proof.
 intros i Hi.
 exists (Node i One Zero).
-unfold Sh_tree_of in |- *; simpl in |- *; auto with v62.
+unfold Sh_tree_of in |- *; simpl in |- *; auto with arith.
 (* Use: def OBDT and eq_Fi_if_i *)
 Qed.
 
@@ -422,9 +422,9 @@ elim (And_BDT t1 t1_ordered t2 t2_ordered); intros t3 Def_t3.
 exists t3.
 unfold Sh_tree_of in |- *; simpl in |- *.
 elim Def_t3; intros t3_ordered Funt3_correct.
-split; auto with v62.
-apply BF_eq_trans with (f2 := AND (Fun t1) (Fun t2)); auto with v62.
-apply BF_eq_congruence_op2; auto with v62.
+split; auto with arith.
+apply BF_eq_trans with (f2 := AND (Fun t1) (Fun t2)); auto with arith.
+apply BF_eq_congruence_op2; auto with arith.
 Qed.
 
 
@@ -445,9 +445,9 @@ elim (Or_BDT t1 t1_ordered t2 t2_ordered); intros t3 Def_t3.
 exists t3.
 unfold Sh_tree_of in |- *; simpl in |- *.
 elim Def_t3; intros t3_ordered Funt3_correct.
-split; auto with v62.
-apply BF_eq_trans with (f2 := OR (Fun t1) (Fun t2)); auto with v62.
-apply BF_eq_congruence_op2; auto with v62.
+split; auto with arith.
+apply BF_eq_trans with (f2 := OR (Fun t1) (Fun t2)); auto with arith.
+apply BF_eq_congruence_op2; auto with arith.
 Qed.
 
 
@@ -466,8 +466,8 @@ simple induction 1.
 intros TNot_e_ordered FunTNot_e_correct.
 exists TNot_e.
 unfold Sh_tree_of in |- *; simpl in |- *.
-split; try apply BF_eq_trans with (NOT (Fun Te)); auto with v62.
-apply BF_eq_congruence_op1; auto with v62.
+split; try apply BF_eq_trans with (NOT (Fun Te)); auto with arith.
+apply BF_eq_congruence_op1; auto with arith.
 Qed.
 
                    

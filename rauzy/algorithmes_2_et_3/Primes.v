@@ -49,7 +49,7 @@ Proof.
 intros p1 b1 Def_p1 b2 b3 Def_b3 p Def_p.
 unfold W_sound in Def_b3.
 unfold Sound in Def_p1.
-apply Def_p1; elim (Def_b3 p Def_p); trivial with v62.
+apply Def_p1; elim (Def_b3 p Def_p); trivial with arith.
 Qed.
 
 
@@ -73,7 +73,7 @@ Lemma Zero_complete : forall b : BDT, OBDT b -> Complete b Zero -> b = Zero.
 Proof.
 intros b Hb.
 elim (eq_BDT_decidable b Zero); intro Cas.
-elim Cas; trivial with v62.
+elim Cas; trivial with arith.
 unfold Complete in |- *; intro H.
 elim (Prime_exists b Hb Cas); intros p Def_p.
 absurd (Solution p Zero); [ exact (No_solution_Zero p) | exact (H p Def_p) ].
@@ -115,7 +115,7 @@ unfold Sound in |- *.
 intros p Def_p; unfold Prime in |- *.
 split.
 apply Implicants_TRUE.
-apply Solution_OBDT_ordered with One; trivial with v62.
+apply Solution_OBDT_ordered with One; trivial with arith.
 intros p' H1_p' H2_p'.
 rewrite (Solution_of_One_is_Nil p Def_p).
 exact (Nil_divides_all p').
@@ -170,36 +170,36 @@ Lemma Result_Ordered :
  Correct l pl -> Correct r pr -> W_correct pl r w -> OBDT (Node i w pr).
 Proof.
 intros HCpl HCpr HCw.
-apply order_node; auto with v62.
+apply order_node; auto with arith.
 apply gt_le_trans with (Dim l);
- [ elim (dim_node_dim_sons i l r); auto with v62
- | apply le_trans with (Dim pl); auto with v62 ].
+ [ elim (dim_node_dim_sons i l r); auto with arith
+ | apply le_trans with (Dim pl); auto with arith ].
 apply gt_le_trans with (Dim r);
- [ elim (dim_node_dim_sons i l r); auto with v62 | auto with v62 ].
+ [ elim (dim_node_dim_sons i l r); auto with arith | auto with arith ].
 (*---- ~w=pr -----*)
 unfold not in |- *; intro Habsurde.
 elim (LT1 w HOw); intro Hcas.
    (* Case w = Zero  *)
-absurd (OBDT (Node i l r)); auto with v62.
+absurd (OBDT (Node i l r)); auto with arith.
 apply Contra with (l = r);
- [ intro H; clear H | apply ordered_node_neq_sons with i; auto with v62 ].
+ [ intro H; clear H | apply ordered_node_neq_sons with i; auto with arith ].
 apply (trans_equal (A:=BDT)) with Zero.
 apply Zero_complete;
- [ elim (ordered_node_ordered_sons i l r HO); trivial with v62 | idtac ].
-elim (LP2 pl HOpl); [ elim HCpl; auto with v62 | idtac ].
+ [ elim (ordered_node_ordered_sons i l r HO); trivial with arith | idtac ].
+elim (LP2 pl HOpl); [ elim HCpl; auto with arith | idtac ].
 pattern Zero at 2 in |- *; elim Hcas.
 elim (Zero_complete r);
- [ elim HCw; trivial with v62
- | elim (ordered_node_ordered_sons i l r HO); trivial with v62
- | elim Hcas; rewrite Habsurde; elim HCpr; trivial with v62 ].
+ [ elim HCw; trivial with arith
+ | elim (ordered_node_ordered_sons i l r HO); trivial with arith
+ | elim Hcas; rewrite Habsurde; elim HCpr; trivial with arith ].
 symmetry  in |- *; apply Zero_complete;
- [ elim (ordered_node_ordered_sons i l r HO); trivial with v62
- | elim Hcas; rewrite Habsurde; elim HCpr; trivial with v62 ].
+ [ elim (ordered_node_ordered_sons i l r HO); trivial with arith
+ | elim Hcas; rewrite Habsurde; elim HCpr; trivial with arith ].
    (* Case w=/=Zero *)
 elim Hcas; intros p Def_p. 
 absurd (Implicant p (Fun r)). 
 elim HCw; unfold W_sound in |- *; intros HCSw HCCw.
-elim (HCSw p Def_p); trivial with v62.
+elim (HCSw p Def_p); trivial with arith.
 apply Prime_implicant.
 elim HCpr; unfold Sound in |- *; intros HCSpr HCCpr.
 apply HCSpr; elim Habsurde; assumption.
@@ -215,19 +215,19 @@ intros HSpl HSpr HSw p Def_p.
 unfold Sound in HSpr.
 unfold Prime in |- *; split.
 (*  Implicant *)
-apply L10; [ idtac | auto with v62 ].
-apply Gt_dim_out_of_solution with pr; [ assumption | auto with v62 | idtac ].
+apply L10; [ idtac | auto with arith ].
+apply Gt_dim_out_of_solution with pr; [ assumption | auto with arith | idtac ].
 apply gt_le_trans with (Dim r);
- [ elim (dim_node_dim_sons i l r HO); trivial with v62 | auto with v62 ].
+ [ elim (dim_node_dim_sons i l r HO); trivial with arith | auto with arith ].
 (*  Smallest  *)
 intros p' H1p' H2p'.
 elim (HSpr p Def_p); intros Hp_Impl Hp_Smallest. 
 apply Hp_Smallest; [ idtac | assumption ].
 apply (L5 i l r p' H1p').
 apply L80 with p; [ assumption | idtac ].
-apply Gt_dim_out_of_solution with pr; [ assumption | auto with v62 | idtac ].
+apply Gt_dim_out_of_solution with pr; [ assumption | auto with arith | idtac ].
 apply gt_le_trans with (Dim r);
- [ elim (dim_node_dim_sons i l r HO); trivial with v62 | auto with v62 ].
+ [ elim (dim_node_dim_sons i l r HO); trivial with arith | auto with arith ].
 Qed.
 
 Lemma Soundness_left_impl :
@@ -242,10 +242,10 @@ rewrite Def_p; apply (L2 i l r HO tl).
 apply Prime_implicant.
 exact (LC2_S_fac1 pl l HSpl r w HSw tl Def_tl).
 apply gt_le_trans with (Dim w);
- [ idtac | apply Head_of_solution_le_dim; auto with v62 ].
+ [ idtac | apply Head_of_solution_le_dim; auto with arith ].
 apply gt_le_trans with (Dim l);
- [ elim (dim_node_dim_sons i l r HO); trivial with v62
- | apply le_trans with (Dim pl); auto with v62 ].
+ [ elim (dim_node_dim_sons i l r HO); trivial with arith
+ | apply le_trans with (Dim pl); auto with arith ].
 Qed.
 
 
@@ -255,10 +255,10 @@ Proof.
 intros tl Def_tl.
 apply Cons_ordered; [ exact (Solution_OBDT_ordered w tl Def_tl HOw) | idtac ].
 apply gt_le_trans with (Dim l);
- [ elim (dim_node_dim_sons i l r HO); trivial with v62
+ [ elim (dim_node_dim_sons i l r HO); trivial with arith
  | apply le_trans with (Dim w);
     [ exact (Head_of_solution_le_dim tl w Def_tl HOw)
-    | apply le_trans with (Dim pl); auto with v62 ] ].
+    | apply le_trans with (Dim pl); auto with arith ] ].
 Qed.
 
 
@@ -282,8 +282,8 @@ rewrite Def_p.
 elim (Tail_exists_with_dim_head i w pr) with p p';
  [ intros tl' Def_p'; rewrite Def_p'
  | exact (Result_Ordered HCpl HCpr HCw)
- | rewrite Def_p; auto with v62
- | elim (inv_Implicant p' (Fun (Node i l r)) H1p'); auto with v62
+ | rewrite Def_p; auto with arith
+ | elim (inv_Implicant p' (Fun (Node i l r)) H1p'); auto with arith
  | assumption
  | assumption ].
 apply Divides_tail_divides_cons;
@@ -291,7 +291,7 @@ apply Divides_tail_divides_cons;
 apply H2tl; [ apply (L40 i l r HO tl'); elim Def_p'; assumption | idtac ].
 apply Divides_cons_divides_tail with i;
  [ elim Def_p'; elim (inv_Implicant p' (Fun (Node i l r)) H1p');
-    trivial with v62
+    trivial with arith
  | exact (Soundness_left_smallest_order tl Def_tl)
  | elim Def_p'; elim Def_p; assumption ].
 Qed.
@@ -316,7 +316,7 @@ elim HCw; intros HCSw HCCw.
 intros p' H1p' H2p' Hi.
 absurd (Implicant tl (Fun r)).
 unfold W_sound in HCSw.
-elim (HCSw tl Def_tl); trivial with v62.
+elim (HCSw tl Def_tl); trivial with arith.
 apply (L9 p');
  [ apply (L8 p' tl i); [ elim Def_p; assumption | assumption ]
  | idtac
@@ -328,7 +328,7 @@ apply H2tl;
 apply (L15 i l r HO Hmon); [ idtac | exact (L5 i l r p' H1p' Hi) ].
 apply (Pth_ord9 i tl);
  [ exact (Soundness_left_smallest_order tl Def_tl)
- | elim (inv_Implicant p' (Fun (Node i l r)) H1p'); trivial with v62
+ | elim (inv_Implicant p' (Fun (Node i l r)) H1p'); trivial with arith
  | apply (L8 p' tl i); [ elim Def_p; assumption | assumption ] ].
 Qed.
 
@@ -405,7 +405,7 @@ elim (LC2_C_fac1 pl l HCCpl r w HCCw tl H2tl);
 elim (Ordered_paths_eq tl' (Solution_OBDT_ordered w tl' H1tl' HOw) tl);
  [ exact H1tl'
  | elim (inv_Implicant tl (Fun l) (Prime_implicant tl (Fun l) H2tl));
-    trivial with v62
+    trivial with arith
  | exact H2tl'
  | idtac ]. 
 elim H2tl; intros H2tl_impl H2tl_smallest; clear H2tl.
@@ -452,34 +452,34 @@ intros.
 (*---- if b1 = Zero  then b2 = Zero ----*)
 exists Zero.
 split;
- [ trivial with v62 | split; [ trivial with v62 | exact BDT2_of_Zero ] ].
+ [ trivial with arith | split; [ trivial with arith | exact BDT2_of_Zero ] ].
 intros.
 (*---- if b1 = One  then b2 = One  ----*)
 exists One.
-split; [ trivial with v62 | split; [ trivial with v62 | exact BDT2_of_One ] ].
+split; [ trivial with arith | split; [ trivial with arith | exact BDT2_of_One ] ].
 (*---- if b1 = (Node i1 h1 l1) then  .... *)
 intros i1 l1 Hrec_l1 r1 Hrec_r1 Node_orded Node_monotonic.
 elim Hrec_l1;
  [ intros Prm_l1 Def_Prm_l1; clear Hrec_l1
- | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with v62
+ | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with arith
  | elim (Mon_node_Mon_sons i1 l1 r1 Node_orded Node_monotonic);
-    trivial with v62 ].
+    trivial with arith ].
 elim Def_Prm_l1; intro HO_Prm_l1.
 simple induction 1; intros HD_Prm_l1 HCorr_Prm_l1; clear H.
 elim Hrec_r1;
  [ intros Prm_r1 Def_Prm_r1; clear Hrec_r1
- | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with v62
+ | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with arith
  | elim (Mon_node_Mon_sons i1 l1 r1 Node_orded Node_monotonic);
-    trivial with v62 ].
+    trivial with arith ].
 elim Def_Prm_r1; intro HO_Prm_r1.
 simple induction 1; intros HD_Prm_r1 HCorr_Prm_r1; clear H.
 clear Def_Prm_r1; clear Def_Prm_l1.
 elim (Existence_Op_W Prm_l1 r1);
  [ intros Prm_l1_W_r1 Correctness_W
  | assumption
- | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with v62
+ | elim (ordered_node_ordered_sons i1 l1 r1 Node_orded); trivial with arith
  | elim (Mon_node_Mon_sons i1 l1 r1 Node_orded Node_monotonic);
-    trivial with v62 ].
+    trivial with arith ].
 elim Correctness_W; intro HO_Prm_l1_W_r1.
 simple induction 1; intros HD_Prm_l1_W_r1 HCorr_Prm_l1_W_r1; clear H.
 clear Correctness_W.
@@ -490,7 +490,7 @@ exact
     HD_Prm_l1 HD_Prm_r1 Prm_l1_W_r1 HO_Prm_l1_W_r1 HD_Prm_l1_W_r1
     HCorr_Prm_l1 HCorr_Prm_r1 HCorr_Prm_l1_W_r1).
 split;
- [ auto with v62
+ [ auto with arith
  | exact
     (Correctness i1 l1 r1 Node_orded Prm_l1 Prm_r1 HO_Prm_l1 HO_Prm_r1
        HD_Prm_l1 HD_Prm_r1 Prm_l1_W_r1 HO_Prm_l1_W_r1 HD_Prm_l1_W_r1

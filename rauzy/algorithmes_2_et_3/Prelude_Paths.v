@@ -29,7 +29,7 @@ Qed.
 
 Lemma I_of_cons_ip : forall (p : Path) (i : nat), Of i (Cons i p).
 Proof.
-simpl in |- *; auto with v62.
+simpl in |- *; auto with arith.
 Qed.
 Hint Resolve I_of_cons_ip.
 
@@ -37,7 +37,7 @@ Lemma Of_p_of_cons_ip :
  forall (p : Path) (i j : nat), Of j p -> Of j (Cons i p).
 Proof.
 intros p i j.
-unfold Of, Cons in |- *; auto with v62.
+unfold Of, Cons in |- *; auto with arith.
 Qed.
 Hint Resolve Of_p_of_cons_ip.
 
@@ -46,7 +46,7 @@ Lemma Of_cons_ip_of_p :
 Proof.
 intros p i j.
 unfold Of at 1 in |- *; simpl in |- *; simple induction 1;
- [ intro; simple induction 1; assumption | trivial with v62 ].
+ [ intro; simple induction 1; assumption | trivial with arith ].
 Qed.
 
 Lemma Not_of_cons_ip :
@@ -54,22 +54,22 @@ Lemma Not_of_cons_ip :
 Proof.
 intros.
 change (~ (i = j \/ Of j p)) in |- *.
-apply deMorgan_not_or; trivial with v62.
+apply deMorgan_not_or; trivial with arith.
 Qed.
 Hint Resolve Not_of_cons_ip.
 
 Lemma Nil_or_not_Nil : forall p : Path, p = Nil \/ (exists k : nat, Of k p).
 Proof.
 simple induction p.
-auto with v62.
+auto with arith.
 intros a tl H.
-right; exists a; auto with v62.
+right; exists a; auto with arith.
 Qed.
 
 Lemma Empty_is_Nil : forall p : Path, (forall i : nat, ~ Of i p) -> p = Nil.
 Proof.
-intro p; elim (Nil_or_not_Nil p); auto with v62.
-simple induction 1; intros k Hk Hp; absurd (Of k p); auto with v62.
+intro p; elim (Nil_or_not_Nil p); auto with arith.
+simple induction 1; intros k Hk Hp; absurd (Of k p); auto with arith.
 Qed.
 
 
@@ -82,7 +82,7 @@ Definition Divides (p1 p2 : Path) := forall i : nat, Of i p1 -> Of i p2.
 
 Lemma Divides_reflexive : forall p : Path, Divides p p.
 Proof.
-unfold Divides in |- *; auto with v62.
+unfold Divides in |- *; auto with arith.
 Qed.
 Hint Resolve Divides_reflexive.
 
@@ -90,7 +90,7 @@ Hint Resolve Divides_reflexive.
 Lemma Divides_trans :
  forall p1 p2 p3 : Path, Divides p1 p2 -> Divides p2 p3 -> Divides p1 p3.
 Proof.
-unfold Divides in |- *; auto with v62.
+unfold Divides in |- *; auto with arith.
 Qed.
 
 Lemma Divides_p_cons_ip : forall (p : Path) (i : nat), Divides p (Cons i p).
@@ -121,7 +121,7 @@ unfold Divides in |- *.
 intros j Hj.
 elim (H1 j Hj);
  [ intro Habs; absurd (Of j p1); [ elim Habs; assumption | assumption ]
- | trivial with v62 ].
+ | trivial with arith ].
 Qed.
 
 Lemma L80 :
@@ -129,7 +129,7 @@ Lemma L80 :
 Proof.
 intros p1 p2 i.
 unfold Divides in |- *; intros H1 H2.
-apply Contra with (Of i p2); auto with v62.
+apply Contra with (Of i p2); auto with arith.
 Qed.
 
 Lemma Divides_tail_divides_cons :
@@ -138,7 +138,7 @@ Lemma Divides_tail_divides_cons :
 Proof.
 intros p1 p2 i.
 unfold Divides in |- *; intros H1 j; simpl in |- *.
-simple induction 1; auto with v62.
+simple induction 1; auto with arith.
 Qed.
 Hint Resolve Divides_tail_divides_cons.
 
@@ -164,12 +164,12 @@ absurd (Of i nil); try assumption.
 unfold Of in |- *; simpl in |- *; contradiction.
 clear p.
 intros j p Hp i Hi.
-exists p; trivial with v62.
+exists p; trivial with arith.
 Qed.
 
 Lemma Head_of_p_in_p : forall (p : Path) (i : nat), Of i p -> Of (Head p) p.
 Proof.
-simple induction p; [ simpl in |- *; contradiction | auto with v62 ].
+simple induction p; [ simpl in |- *; contradiction | auto with arith ].
 Qed.
 
 
@@ -193,7 +193,7 @@ Definition inv_Ordered (p : Path) :=
 
 Lemma p_inv_Ordered : forall p : Path, Ordered p -> inv_Ordered p.
 Proof.
-simple induction 1; simpl in |- *; auto with v62.
+simple induction 1; simpl in |- *; auto with arith.
 Qed.
 Hint Resolve p_inv_Ordered.
 
@@ -201,7 +201,7 @@ Lemma Ordered_cons_ordered_tail :
  forall (i : nat) (p : Path), Ordered (Cons i p) -> Ordered p.
 Proof.
 intros i p H.
-elim (p_inv_Ordered (Cons i p) H); auto with v62.
+elim (p_inv_Ordered (Cons i p) H); auto with arith.
 Qed.
 
 Lemma L11 : forall (i : nat) (p : Path), Ordered (Cons i p) -> ~ Of i p.
@@ -210,15 +210,15 @@ intro i; simple induction p;
  [ intro; exact (in_nil (a:=i)) | clear p; intros j q Hq H ].
 change (~ (j = i \/ Of i q)) in |- *.
 apply deMorgan_not_or.
-apply Contra with (i = j); [ auto with v62 | apply gt_neq ].
-elim (p_inv_Ordered (Cons i (Cons j q))); auto with v62.
+apply Contra with (i = j); [ auto with arith | apply gt_neq ].
+elim (p_inv_Ordered (Cons i (Cons j q))); auto with arith.
 apply Hq.
 elim (p_inv_Ordered (Cons j q));
  [ intros H1 H2 | apply Ordered_cons_ordered_tail with i; assumption ].
 apply Cons_ordered;
  [ assumption
  | apply gt_trans with j;
-    [ elim (p_inv_Ordered (Cons i (Cons j q))); auto with v62 | assumption ] ].
+    [ elim (p_inv_Ordered (Cons i (Cons j q))); auto with arith | assumption ] ].
 Qed.
 
 Lemma Head_max_of_ordered_path :
@@ -227,8 +227,8 @@ Proof.
 simple induction 1;
  [ simpl in |- *; contradiction | clear H p; intros p Hp Hrec i Hi j Hj ].
 simpl in |- *; simpl in Hj.
-elim Hj; [ simple induction 1; trivial with v62 | intro ].
-apply gt_le_weak; apply gt_le_trans with (Head p); auto with v62.
+elim Hj; [ simple induction 1; trivial with arith | intro ].
+apply gt_le_weak; apply gt_le_trans with (Head p); auto with arith.
 Qed.
 
 Lemma La_4bis :
@@ -238,7 +238,7 @@ Lemma La_4bis :
 Proof.
 intros p Hp i H1i H2i.
 elim (le_lt_or_eq i (Head p) (Head_max_of_ordered_path p Hp i H1i));
- [ intro Habsurde | trivial with v62 ].
+ [ intro Habsurde | trivial with arith ].
 absurd (Of (Head p) p);
  [ apply H2i; apply lt_gt; assumption
  | apply Head_of_p_in_p with i; assumption ].
@@ -252,7 +252,7 @@ Proof.
 intros p1 p2 i H1 H2.
 unfold Divides in |- *; simpl in |- *.
 intros H j Hj.
-elim (H j); [ idtac | trivial with v62 | auto with v62 ].
+elim (H j); [ idtac | trivial with arith | auto with arith ].
 intro Habsurde.
 absurd (Of i p1); [ exact (L11 i p1 H1) | rewrite Habsurde; assumption ].
 Qed.
@@ -266,9 +266,9 @@ absurd (Of i Nil); [ exact (in_nil (a:=i)) | assumption ].
 clear H p; intros p H Hrec i Hi j Hj.
 unfold Of in Hj; elim Hj.
   (* case i=j *)
-simple induction 1; apply gt_le_trans with (Head p); auto with v62.
+simple induction 1; apply gt_le_trans with (Head p); auto with arith.
   (* case j in p *)
-auto with v62.
+auto with arith.
 Qed.
 
 Lemma Pth_ord9 :
@@ -280,16 +280,16 @@ simple induction p2.
   (* case p2=nil *)
 intros.
 apply Cons_ordered;
- [ assumption | apply (Pth_ord8 (Cons i p1) H i); auto with v62 ].
+ [ assumption | apply (Pth_ord8 (Cons i p1) H i); auto with arith ].
   (* case p2=/= nil *)  
 clear p2; intros hp2 tlp2 Hrec Hp2 Hdiv.
 apply Cons_ordered; try assumption.
 apply gt_le_trans with (Head p1);
- [ elim (p_inv_Ordered (Cons i p1) H); auto with v62
+ [ elim (p_inv_Ordered (Cons i p1) H); auto with arith
  | apply Head_max_of_ordered_path ].
-elim (p_inv_Ordered (Cons i p1) H); auto with v62.
+elim (p_inv_Ordered (Cons i p1) H); auto with arith.
 unfold Divides in Hdiv.
-apply Hdiv; apply Head_of_p_in_p with (i := hp2); auto with v62.
+apply Hdiv; apply Head_of_p_in_p with (i := hp2); auto with arith.
 Qed.
 
 Lemma Cons_equal_head_equal :
@@ -303,9 +303,9 @@ Proof.
 intros i1 tl1 HO1 i2 tl2 HO2 Hdiv1 Hdiv2.
 apply le_antisym.
 change (Head (Cons i1 tl1) <= Head (Cons i2 tl2)) in |- *.
-apply Head_max_of_ordered_path; auto with v62.
+apply Head_max_of_ordered_path; auto with arith.
 change (Head (Cons i2 tl2) <= Head (Cons i1 tl1)) in |- *.
-apply Head_max_of_ordered_path; auto with v62.
+apply Head_max_of_ordered_path; auto with arith.
 Qed.
 
 Lemma Ordered_paths_eq :
@@ -316,31 +316,31 @@ Proof.
 simple induction 1; clear H p1.
 simple induction 1; try clear H p2.
 (* case Nil Nil *)
-trivial with v62.
+trivial with arith.
 (* case Nil Cons *)
 intros p1 HO1 Hrec1 i Hi Hdiv1 Hdiv2.
 unfold Divides in Hdiv2.
-absurd (Of i Nil); [ exact (in_nil (a:=i)) | auto with v62 ].
+absurd (Of i Nil); [ exact (in_nil (a:=i)) | auto with arith ].
 intros tl1 HO_tl1 Hrec_tl1 i1 Hi1.
 simple induction 1.
 (* case Cons Nil *)
 intro Hdiv1.
 unfold Divides in Hdiv1.
-absurd (Of i1 Nil); [ exact (in_nil (a:=i1)) | auto with v62 ].
+absurd (Of i1 Nil); [ exact (in_nil (a:=i1)) | auto with arith ].
 (* case Cons Cons *)
 intros tl2 HO_tl2 Hrec_tl2 i2 Hi2 Hdiv1 Hdiv2.
 elim (Hrec_tl1 tl2 HO_tl2).
 elim
  (Cons_equal_head_equal i1 tl1 (Cons_ordered tl1 HO_tl1 i1 Hi1) i2 tl2
     (Cons_ordered tl2 HO_tl2 i2 Hi2) Hdiv1 Hdiv2); 
- trivial with v62.
+ trivial with arith.
 apply (Divides_cons_divides_tail tl1 tl2 i1);
- [ auto with v62
+ [ auto with arith
  | pattern i1 in |- *;
     rewrite
      (Cons_equal_head_equal i1 tl1 (Cons_ordered tl1 HO_tl1 i1 Hi1) i2 tl2
         (Cons_ordered tl2 HO_tl2 i2 Hi2) Hdiv1 Hdiv2)
-     ; auto with v62
+     ; auto with arith
  | pattern i1 at 2 in |- *;
     rewrite
      (Cons_equal_head_equal i1 tl1 (Cons_ordered tl1 HO_tl1 i1 Hi1) i2 tl2
@@ -351,8 +351,8 @@ apply (Divides_cons_divides_tail tl2 tl1 i1);
     rewrite
      (Cons_equal_head_equal i1 tl1 (Cons_ordered tl1 HO_tl1 i1 Hi1) i2 tl2
         (Cons_ordered tl2 HO_tl2 i2 Hi2) Hdiv1 Hdiv2)
-     ; auto with v62
- | auto with v62
+     ; auto with arith
+ | auto with arith
  | pattern i1 at 1 in |- *;
     rewrite
      (Cons_equal_head_equal i1 tl1 (Cons_ordered tl1 HO_tl1 i1 Hi1) i2 tl2
@@ -370,11 +370,11 @@ Proof.
 intros i p HO p' H1 H2 H3.
 elim (Tail_exists p' i H3); intros tl' Def_tl'.
 exists tl'.
-rewrite (La_4bis p' H2 i H3); [ trivial with v62 | intros j Hj ].
+rewrite (La_4bis p' H2 i H3); [ trivial with arith | intros j Hj ].
 unfold not in |- *; intro Habs; absurd (j > i);
  [ unfold Divides in H1; apply le_not_gt | assumption ].
 change (j <= Head (Cons i p)) in |- *; apply Head_max_of_ordered_path;
- auto with v62.
+ auto with arith.
 Qed.
 
 
@@ -409,24 +409,24 @@ Hint Unfold Inv_Solution.
 Lemma p_inv_Solution :
  forall (p : Path) (b : BDT), Solution p b -> Inv_Solution p b.
 Proof.
-simple induction 1; [ auto with v62 | idtac | auto with v62 ].
+simple induction 1; [ auto with arith | idtac | auto with arith ].
 clear H b p.
 intros i h l p Def_p H.
 unfold Inv_Solution in |- *.
-right; exists p; auto with v62.
+right; exists p; auto with arith.
 Qed.
 Hint Resolve p_inv_Solution.
 
 Lemma No_solution_Zero : forall p : Path, ~ Solution p Zero.
 Proof.
 unfold not in |- *; intros p H.
-change (Inv_Solution p Zero) in |- *; auto with v62.
+change (Inv_Solution p Zero) in |- *; auto with arith.
 Qed.
 
 Lemma Solution_of_One_is_Nil : forall p : Path, Solution p One -> p = Nil.
 Proof.
 intros.
-change (Inv_Solution p One) in |- *; auto with v62.
+change (Inv_Solution p One) in |- *; auto with arith.
 Qed.
 
 Lemma L1 :
@@ -435,35 +435,35 @@ Lemma L1 :
  Solution p l \/ (exists p' : Path, Solution p' h /\ p = Cons i p').
 Proof.
 intros i h l p H.
-change (Inv_Solution p (Node i h l)) in |- *; auto with v62.
+change (Inv_Solution p (Node i h l)) in |- *; auto with arith.
 Qed.
 
 Lemma Head_of_solution_le_dim :
  forall (p : Path) (b : BDT), Solution p b -> OBDT b -> Head p <= Dim b.
 Proof.
 simple induction 1;
- [ auto with v62
- | auto with v62
+ [ auto with arith
+ | auto with arith
  | clear H p b; intros i h l p Def_p Hrec HO ].
 apply le_trans with (Dim l);
- [ apply Hrec; elim (ordered_node_ordered_sons i h l HO); auto with v62
- | apply gt_le_weak; elim (dim_node_dim_sons i h l); auto with v62 ].
+ [ apply Hrec; elim (ordered_node_ordered_sons i h l HO); auto with arith
+ | apply gt_le_weak; elim (dim_node_dim_sons i h l); auto with arith ].
 Qed.
 
 Lemma Solution_OBDT_ordered :
  forall (b : BDT) (p : Path), Solution p b -> OBDT b -> Ordered p.
 Proof.
 simple induction 1;
- [ auto with v62
+ [ auto with arith
  | clear H p b; intros i h l p Def_p Hrec Hnode
  | clear H p b; intros i h l p Def_p Hrec Hnode ].
 apply Cons_ordered.
-apply Hrec; elim (ordered_node_ordered_sons i h l Hnode); auto with v62.
+apply Hrec; elim (ordered_node_ordered_sons i h l Hnode); auto with arith.
 apply gt_le_trans with (Dim h);
- [ elim (dim_node_dim_sons i h l); auto with v62
+ [ elim (dim_node_dim_sons i h l); auto with arith
  | apply (Head_of_solution_le_dim p h Def_p);
-    elim (ordered_node_ordered_sons i h l Hnode); auto with v62 ].
-apply Hrec; elim (ordered_node_ordered_sons i h l Hnode); auto with v62.
+    elim (ordered_node_ordered_sons i h l Hnode); auto with arith ].
+apply Hrec; elim (ordered_node_ordered_sons i h l Hnode); auto with arith.
 Qed.
 
 Lemma Gt_dim_out_of_solution :
@@ -472,7 +472,7 @@ Lemma Gt_dim_out_of_solution :
 Proof.
 intros b p Def_p Hb i Hi.
 unfold not in |- *; intro Habsurde.
-absurd (i > i); [ auto with v62 | apply gt_le_trans with (Head p) ].
+absurd (i > i); [ auto with arith | apply gt_le_trans with (Head p) ].
 apply gt_le_trans with (Dim b);
  [ assumption | exact (Head_of_solution_le_dim p b Def_p Hb) ].
 exact
@@ -498,22 +498,22 @@ apply le_trans with (Head p);
 apply Head_max_of_ordered_path;
  [ exact (Solution_OBDT_ordered (Node i h l) p Def_p HO) | idtac ].
 unfold Divides in H3p'; apply H3p'.
-pattern p' at 2 in |- *; rewrite Def_tlp'; trivial with v62.
+pattern p' at 2 in |- *; rewrite Def_tlp'; trivial with arith.
 Qed.
 
 Lemma LT1 :
  forall b : BDT, OBDT b -> b = Zero \/ (exists p : Path, Solution p b).
 Proof.
 simple induction 1;
- [ auto with v62
- | right; exists Nil; trivial with v62
+ [ auto with arith
+ | right; exists Nil; trivial with arith
  | intros l r HOl Hl HOr Hr i H1i H2i Hsons ].
 elim Hr; [ intro Hr0 | simple induction 1; intros sr Def_sr ].
 elim Hl; [ intro Hl0 | simple induction 1; intros sl Def_sl ].
 clear Hl. clear Hr.
-elim Hsons; rewrite Hl0; rewrite Hr0; trivial with v62.
-right; exists (Cons i sl); auto with v62.
-right; exists sr; auto with v62.
+elim Hsons; rewrite Hl0; rewrite Hr0; trivial with arith.
+right; exists (Cons i sl); auto with arith.
+right; exists sr; auto with arith.
 Qed.
 
 
@@ -533,7 +533,7 @@ exists (fun i : nat => false).
 unfold Assignment_of in |- *; split;
  [ intros i Habs; absurd (Of i nil); try assumption; unfold Of in |- *;
     exact (in_nil (a:=i))
- | trivial with v62 ].
+ | trivial with arith ].
 (*  p=Cons(a,l)  *)
 intros a l.
 simple induction 1; intros Al Def_Al; clear H.
@@ -541,7 +541,7 @@ unfold Assignment_of in Def_Al; elim Def_Al; intros HAl1 HAl2; clear Def_Al.
 exists (Upd Al a true).
 unfold Assignment_of in |- *; split.
      (* variables assigned to true *)
-intro i; replace (Of i (a :: l)) with (a = i \/ In i l); trivial with v62.
+intro i; replace (Of i (a :: l)) with (a = i \/ In i l); trivial with arith.
 simple induction 1.
 (* PB Changein Intros i Hi; Change a=i \/ (In nat i l) in Hi.
 Elim Hi; Clear Hi.*)
@@ -555,7 +555,7 @@ elim (eq_nat_dec a i);
     exact (L_Assign3 Al a i adifi (Al i)) ].
      (* variables assigned to false *)
 intro i; replace (~ Of i (a :: l)) with (~ (a = i \/ In i l));
- trivial with v62; intro Hi.
+ trivial with arith; intro Hi.
 elim (deMorgan_and_not (a = i) (In i l) Hi); intros Hi_1 Hi_2; clear Hi.
 rewrite <- (HAl2 i Hi_2).
 exact (L_Assign3 Al a i Hi_1 true).
@@ -579,10 +579,10 @@ unfold Assignment_of in Def_A2; elim Def_A2; intros HA2_in HA2_out;
 unfold Ass_eq in |- *; intro i.
 elim (Of_path_dec p1 i); intro H.
 apply (trans_equal (A:=bool)) with true;
- [ auto with v62 | symmetry  in |- *; auto with v62 ].
+ [ auto with arith | symmetry  in |- *; auto with arith ].
 apply (trans_equal (A:=bool)) with false;
- [ auto with v62 | symmetry  in |- * ].
-apply HA2_out; apply Contra with (Of i p1); auto with v62.
+ [ auto with arith | symmetry  in |- * ].
+apply HA2_out; apply Contra with (Of i p1); auto with arith.
 Qed.
 
 Lemma Assign_of_cons :
@@ -592,7 +592,7 @@ Proof.
 intros p i A.
 unfold Assignment_of in |- *.
 simple induction 1; intros H1 H2; clear H.
-apply H1; unfold Of, Cons in |- *; trivial with v62.
+apply H1; unfold Of, Cons in |- *; trivial with arith.
 Qed.
 
 Lemma Inv_Assignment_of_true :
@@ -604,9 +604,9 @@ unfold Assignment_of in |- *.
 simple induction 1; intros H1 H2; clear H.
 intros i Def_i.
 elim (Of_path_dec p i);
- [ trivial with v62 | intro Habsurde; absurd (A i = false) ].
+ [ trivial with arith | intro Habsurde; absurd (A i = false) ].
 rewrite Def_i; exact diff_true_false.
-auto with v62.
+auto with arith.
 Qed.
 
 Lemma Inv_Assignment_of_false :
@@ -618,10 +618,10 @@ unfold Assignment_of in |- *.
 simple induction 1; intros H1 H2; clear H.
 intros i Def_i.
 elim (Of_path_dec p i);
- [ intro Habsurde; absurd (A i = true) | trivial with v62 ].
+ [ intro Habsurde; absurd (A i = true) | trivial with arith ].
 apply Contra with (true = A i);
- [ auto with v62 | rewrite Def_i; exact diff_true_false ].
-auto with v62.
+ [ auto with arith | rewrite Def_i; exact diff_true_false ].
+auto with arith.
 Qed.
 
 Lemma Assign_of_cons_eq :
@@ -649,9 +649,9 @@ apply (trans_equal (A:=bool)) with true;
  | elim H1; symmetry  in |- *; exact (L_Assign2 A i true) ].
 (*-- (Of j p) /\ ~ i=j --*)
 apply (trans_equal (A:=bool)) with true;
- [ apply HA'_in; auto with v62
+ [ apply HA'_in; auto with arith
  | apply (trans_equal (A:=bool)) with (A j);
-    [ symmetry  in |- *; apply HA_in; trivial with v62
+    [ symmetry  in |- *; apply HA_in; trivial with arith
     | symmetry  in |- *; exact (L_Assign3 A i j H1 true) ] ].
 (*-- ~(Of j p) /\ i=j --*)
 apply (trans_equal (A:=bool)) with true;
@@ -659,9 +659,9 @@ apply (trans_equal (A:=bool)) with true;
  | elim H1; symmetry  in |- *; exact (L_Assign2 A i true) ].
 (*-- ~(Of j p) /\ ~ i=j --*)
 apply (trans_equal (A:=bool)) with false;
- [ apply HA'_out; auto with v62
+ [ apply HA'_out; auto with arith
  | apply (trans_equal (A:=bool)) with (A j);
-    [ symmetry  in |- *; apply HA_out; trivial with v62
+    [ symmetry  in |- *; apply HA_out; trivial with arith
     | symmetry  in |- *; exact (L_Assign3 A i j H1 true) ] ].
 Qed.
 
@@ -675,7 +675,7 @@ intros p A Def_A i A' Def_A' f Hi.
 rewrite (Assign_of_cons_eq p A Def_A i A' Def_A'). 
 change (f A = Frestr f i true A) in |- *.
 generalize A; change (BF_eq f (Frestr f i true)) in |- *.
-apply L_Dep_Var1; trivial with v62.    
+apply L_Dep_Var1; trivial with arith.    
 Qed.
 
 
@@ -698,9 +698,9 @@ Definition Sub (p : Path) (i : nat) : Path :=
 Lemma I_out_of_Sub_ip : forall (p : Path) (i : nat), ~ Of i (Sub p i).
 Proof.
 simple induction p.
-simpl in |- *; unfold not in |- *; trivial with v62.
+simpl in |- *; unfold not in |- *; trivial with arith.
 clear p; intros a p Hp i; simpl in |- *.
-elim (eq_nat_dec i a); auto with v62.
+elim (eq_nat_dec i a); auto with arith.
 Qed.
 Hint Resolve I_out_of_Sub_ip.
 
@@ -715,7 +715,7 @@ apply Hp; try assumption.
 apply Of_cons_ip_of_p with i; try assumption.
 rewrite H; assumption.
 simpl in |- *; simpl in H1j.
-elim H1j; auto with v62.
+elim H1j; auto with arith.
 Qed.
 Hint Resolve jofp_jofsub_ip.
 
@@ -728,7 +728,7 @@ clear p; intros a p Hp i j; simpl in |- *.
 elim (eq_nat_dec i a);
  [ intros; right; apply Hp with i; assumption
  | intro; simpl in |- *; simple induction 1;
-    [ auto with v62 | intro; right; apply Hp with i; assumption ] ].
+    [ auto with arith | intro; right; apply Hp with i; assumption ] ].
 Qed.
 
 Lemma Outof_p_outof_sub_ip :
@@ -743,26 +743,26 @@ Lemma Head_sub_ordered :
  forall p : Path, Ordered p -> forall i : nat, Head (Sub p i) <= Head p.
 Proof.
 simple induction 1;
- [ simpl in |- *; trivial with v62
+ [ simpl in |- *; trivial with arith
  | clear H p; intros p H1p H2p i Hi j; simpl in |- * ].
 elim (eq_nat_dec j i); intro Cas.
 (* case i=j *)
-apply le_trans with (Head p); auto with v62.
+apply le_trans with (Head p); auto with arith.
 (* case i=/=j *)
-auto with v62.
+auto with arith.
 Qed.
 
 Lemma Ordered_p_ordered_sub_pi :
  forall (i : nat) (p : Path), Ordered p -> Ordered (Sub p i).
 Proof.
 intro i; simple induction p;
- [ simpl in |- *; trivial with v62 | intros hp tlp Hrec Hp ].
+ [ simpl in |- *; trivial with arith | intros hp tlp Hrec Hp ].
 simpl in |- *; elim (eq_nat_dec i hp); intro Cas.
 apply Hrec; apply Ordered_cons_ordered_tail with hp; assumption.
 apply Cons_ordered;
  [ apply Hrec; apply Ordered_cons_ordered_tail with hp; assumption
  | apply gt_le_trans with (Head tlp) ].
-elim (p_inv_Ordered (Cons hp tlp) Hp); auto with v62.
+elim (p_inv_Ordered (Cons hp tlp) Hp); auto with arith.
 apply Head_sub_ordered; apply Ordered_cons_ordered_tail with hp; assumption.
 Qed.
 
@@ -776,7 +776,7 @@ Proof.
 intros p i A.
 unfold Assignment_of in |- *.
 simple induction 1; intros H1 H2; clear H.
-apply H2; auto with v62.
+apply H2; auto with arith.
 Qed.
 
 Lemma Assign_of_sub_eq :
@@ -805,9 +805,9 @@ apply (trans_equal (A:=bool)) with false;
  | elim H1; symmetry  in |- *; exact (L_Assign2 A i false) ].
 (*-- (Of j p) /\ ~ i=j --*)
 apply (trans_equal (A:=bool)) with true;
- [ apply HA'_in; auto with v62
+ [ apply HA'_in; auto with arith
  | apply (trans_equal (A:=bool)) with (A j);
-    [ symmetry  in |- *; apply HA_in; trivial with v62
+    [ symmetry  in |- *; apply HA_in; trivial with arith
     | symmetry  in |- *; exact (L_Assign3 A i j H1 false) ] ].
 (*-- ~(Of j p) /\ i=j --*)
 apply (trans_equal (A:=bool)) with false;
@@ -815,9 +815,9 @@ apply (trans_equal (A:=bool)) with false;
  | elim H1; symmetry  in |- *; exact (L_Assign2 A i false) ].
 (*-- ~(Of j p) /\ ~ i=j --*)
 apply (trans_equal (A:=bool)) with false;
- [ apply HA'_out; auto with v62
+ [ apply HA'_out; auto with arith
  | apply (trans_equal (A:=bool)) with (A j);
-    [ symmetry  in |- *; apply HA_out; trivial with v62
+    [ symmetry  in |- *; apply HA_out; trivial with arith
     | symmetry  in |- *; exact (L_Assign3 A i j H1 false) ] ].
 Qed.
 
@@ -831,5 +831,5 @@ intros p A Def_A i A' Def_A' f Hi.
 rewrite (Assign_of_sub_eq p A Def_A i A' Def_A'). 
 change (f A = Frestr f i false A) in |- *.
 generalize A; change (BF_eq f (Frestr f i false)) in |- *.
-apply L_Dep_Var1; trivial with v62.    
+apply L_Dep_Var1; trivial with arith.    
 Qed.

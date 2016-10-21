@@ -47,7 +47,7 @@ Proof.
 intros P H1 H2 H3 H4 H5.
 simple induction b1; try assumption.
 intros i1 h1 H6 l1 H7.
-simple induction b2; auto with v62.
+simple induction b2; auto with arith.
 Qed.
 
 Lemma BDT_matching2 :
@@ -60,9 +60,9 @@ Lemma BDT_matching2 :
  forall b1 b2 : BDT, P b1 b2.
 Proof.
 intros P H1 H2 H3 H4 H5.
-simple induction b2; auto with v62.
+simple induction b2; auto with arith.
 intros i2 h2 H6 l2 H7.
-elim b1; auto with v62.
+elim b1; auto with arith.
 Qed.
 
 
@@ -110,13 +110,13 @@ Lemma ind1_ind2 :
 Proof.
 intros P b1 HOb1 HDb1 b2 HOb2 HDb2 H_ind1 b.
 apply H_ind1;
- [ unfold R in |- *; apply Measure_decrease; trivial with v62
+ [ unfold R in |- *; apply Measure_decrease; trivial with arith
  | apply Ordered_node_ordered_restr; try assumption;
     elim (Max_le (Dim b1) (Dim b2)); unfold Maxdim in |- *; 
-    auto with v62
+    auto with arith
  | apply Ordered_node_ordered_restr; try assumption;
     elim (Max_le (Dim b1) (Dim b2)); unfold Maxdim in |- *; 
-    auto with v62 ].
+    auto with arith ].
 Qed.
  
 
@@ -143,23 +143,23 @@ apply Wf_ind1.
 clear b1 b2.
 intros b1 b2.
 pattern b1, b2 in |- *.
-apply BDT_matching1; auto with v62.
+apply BDT_matching1; auto with arith.
 clear b1 b2.
 intros i1 i2 h1 h2 l1 l2 Hn1n2 n1_ordered n2_ordered.
 apply H5 with (i := Max i1 i2); try assumption; try apply Dim_node_gt_O;
- try trivial with v62.
+ try trivial with arith.
 (* P(n1\i=true,n2\i=true) *)
 change
   (P (Choice (Node i1 h1 l1) (Maxdim (Node i1 h1 l1) (Node i2 h2 l2)) true)
      (Choice (Node i2 h2 l2) (Maxdim (Node i1 h1 l1) (Node i2 h2 l2)) true))
  in |- *.
-apply ind1_ind2; try assumption; apply Dim_node_gt_O; auto with v62.
+apply ind1_ind2; try assumption; apply Dim_node_gt_O; auto with arith.
 (* P(n1\i=false,n2\i=false) *)
 change
   (P (Choice (Node i1 h1 l1) (Maxdim (Node i1 h1 l1) (Node i2 h2 l2)) false)
      (Choice (Node i2 h2 l2) (Maxdim (Node i1 h1 l1) (Node i2 h2 l2)) false))
  in |- *.
-apply ind1_ind2; try assumption; apply Dim_node_gt_O; auto with v62.
+apply ind1_ind2; try assumption; apply Dim_node_gt_O; auto with arith.
 Qed.
 
 (*---------------        Second formulation       ----------------------*)
@@ -200,45 +200,45 @@ intros P H1 H2 H3 H4 H5 H6 H7 b1 b2.
 pattern b1, b2 in |- *.
 apply Wf_ind1.
 clear b1 b2; intros b1 b2; pattern b1, b2 in |- *.
-apply BDT_matching1; auto with v62.
+apply BDT_matching1; auto with arith.
 intros i1 i2 h1 h2 l1 l2 Hn1n2 Hn1 Hn2.
 elim (Compar i1 i2); intro Hi.
 (* case i1 > i2 *)
-apply H5; auto with v62.
+apply H5; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_h1n2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
  | assumption ].
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_l1n2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
  | assumption ].
 (* case i1 = i2 *)
-apply H6; auto with v62.
+apply H6; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_h1h2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_l1l2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 (* case i2 > i1 *)
-apply H7; auto with v62.
+apply H7; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_n1h2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
  | assumption
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_n1l2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
  | assumption
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 Qed.
 
 
@@ -300,38 +300,38 @@ intros P H1 H2 H3 H4 H5 H6 H7 b1 b2.
 pattern b1, b2 in |- *.
 apply Wf_ind1.
 clear b1 b2; intros b1 b2; pattern b1, b2 in |- *.
-apply BDT_matching2; auto with v62.
+apply BDT_matching2; auto with arith.
 intros i1 i2 h1 h2 l1 l2 Hn1n2 Hn1 Hn2.
 elim (Compar i1 i2); intro Hi.
 (* case i1 > i2 *)
-apply H5; auto with v62.
+apply H5; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_h1n2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
  | assumption ].
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_l1n2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
  | assumption ].
 (* case i1 = i2 *)
-apply H6; auto with v62.
+apply H6; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_h1h2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_l1l2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
- | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with v62
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i1 h1 l1 Hn1); auto with arith
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 (* case i2 > i1 *)
-apply H7; auto with v62.
+apply H7; auto with arith.
 apply Hn1n2;
  [ unfold R, Maxdim in |- *; simpl in |- *;
     exact (Decrease_n1n2_n1l2 i1 i2 h1 l1 Hn1 h2 l2 Hn2 Hi)
  | assumption
- | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with v62 ].
+ | elim (ordered_node_ordered_sons i2 h2 l2 Hn2); auto with arith ].
 Qed.

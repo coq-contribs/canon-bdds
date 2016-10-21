@@ -20,68 +20,68 @@ Require Import Formula_to_BDT.
 Lemma Unique_Zero :
  forall b : BDT, OBDT b -> BF_eq (Fun Zero) (Fun b) -> Zero = b.
 Proof.
-simple induction b; [ trivial with v62 | idtac | idtac ].
-simpl in |- *; intros; absurd (BF_eq TRUE FALSE); auto with v62.
+simple induction b; [ trivial with arith | idtac | idtac ].
+simpl in |- *; intros; absurd (BF_eq TRUE FALSE); auto with arith.
 exact TRUE_neq_FALSE.
 (*   Case b=Node(i,h,l)  *)
 intros i h Hh l Hl HO HF.
 absurd (h = l).
    (*  ~ h=l *)
-apply ordered_node_neq_sons with (i := i); trivial with v62.
+apply ordered_node_neq_sons with (i := i); trivial with arith.
    (*    h=l  *)
-cut (BF_eq (Fun Zero) (IF F i then Fun h else Fun l)); trivial with v62.
+cut (BF_eq (Fun Zero) (IF F i then Fun h else Fun l)); trivial with arith.
 clear HF; intro HF.
 apply trans_equal with Zero.
 symmetry  in |- *; apply Hh.
-elim (ordered_node_ordered_sons i h l HO); trivial with v62.
+elim (ordered_node_ordered_sons i h l HO); trivial with arith.
 apply BF_eq_sym; elim (FB12bis i) with (Fun h) (Fun l) (Fun Zero);
- [ trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
+ [ trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
  | exact (Fcst_no_depvar i false)
- | auto with v62 ].
+ | auto with arith ].
 apply Hl.
-elim (ordered_node_ordered_sons i h l HO); trivial with v62.
+elim (ordered_node_ordered_sons i h l HO); trivial with arith.
 elim (FB12bis i) with (Fun h) (Fun l) (Fun Zero);
- [ auto with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
+ [ auto with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
  | exact (Fcst_no_depvar i false)
- | auto with v62 ].
+ | auto with arith ].
 Qed.
 
 
 Lemma Unique_One :
  forall b : BDT, OBDT b -> BF_eq (Fun One) (Fun b) -> One = b.
 Proof.
-simple induction b; [ idtac | trivial with v62 | idtac ].
-simpl in |- *; intros; absurd (BF_eq TRUE FALSE); auto with v62.
+simple induction b; [ idtac | trivial with arith | idtac ].
+simpl in |- *; intros; absurd (BF_eq TRUE FALSE); auto with arith.
 exact TRUE_neq_FALSE.
 (*   Case b=Node(i,h,l)  *)
 intros i h Hh l Hl HO HF.
 absurd (h = l).
    (*  ~h=l *)
-apply ordered_node_neq_sons with (i := i); trivial with v62.
+apply ordered_node_neq_sons with (i := i); trivial with arith.
    (*   h=l  *)
-cut (BF_eq (Fun One) (IF F i then Fun h else Fun l)); trivial with v62.
+cut (BF_eq (Fun One) (IF F i then Fun h else Fun l)); trivial with arith.
 clear HF. intro HF.
 apply trans_equal with One.
 symmetry  in |- *; apply Hh.
-elim (ordered_node_ordered_sons i h l HO); trivial with v62.
+elim (ordered_node_ordered_sons i h l HO); trivial with arith.
 apply BF_eq_sym; elim (FB12bis i) with (Fun h) (Fun l) (Fun One);
- [ trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
+ [ trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
  | exact (Fcst_no_depvar i true)
- | auto with v62 ].
+ | auto with arith ].
 apply Hl.
-elim (ordered_node_ordered_sons i h l HO); trivial with v62.
+elim (ordered_node_ordered_sons i h l HO); trivial with arith.
 elim (FB12bis i) with (Fun h) (Fun l) (Fun One);
- [ auto with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
- | elim (Fun_sons_dim_nondep i h l); trivial with v62
+ [ auto with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
+ | elim (Fun_sons_dim_nondep i h l); trivial with arith
  | exact (Fcst_no_depvar i true)
- | auto with v62 ].
+ | auto with arith ].
 Qed.
 
 Lemma Choices_eq_bdts_eq :
@@ -113,7 +113,7 @@ apply trans_equal with b1.
    (* h2 = b1 *)
 replace b1 with (Choice b1 i2 true);
  [ idtac
- | symmetry  in |- *; apply Choice_invariant; elim Def_b1; trivial with v62 ].
+ | symmetry  in |- *; apply Choice_invariant; elim Def_b1; trivial with arith ].
 replace h2 with (Choice b2 i2 true).
 rewrite (gt_Max i2 i1 Hi2supi1).
 change
@@ -127,7 +127,7 @@ symmetry  in |- *; elim Def_b2; apply Choice_left.
    (* l2 = b1 *)
 replace b1 with (Choice b1 i2 false);
  [ idtac
- | symmetry  in |- *; apply Choice_invariant; elim Def_b1; trivial with v62 ].
+ | symmetry  in |- *; apply Choice_invariant; elim Def_b1; trivial with arith ].
 replace l2 with (Choice b2 i2 false).
 rewrite (gt_Max i2 i1 Hi2supi1).
 change
@@ -146,7 +146,7 @@ replace h1 with (Choice b1 i1 true).
 replace h2 with (Choice b2 i2 true).
 rewrite (eq_Max i1 i2 H_i1eqi2).
 pattern i2 at 2 in |- *; rewrite (eq_Max i2 i1);
- [ idtac | symmetry  in |- *; trivial with v62 ].
+ [ idtac | symmetry  in |- *; trivial with arith ].
 change
   (Choice b1 (Max (Dim (Node i1 h1 l1)) (Dim (Node i2 h2 l2))) true =
    Choice b2 (Max (Dim (Node i2 h2 l2)) (Dim (Node i1 h1 l1))) true) 
@@ -161,7 +161,7 @@ replace l1 with (Choice b1 i1 false).
 replace l2 with (Choice b2 i2 false).
 rewrite (eq_Max i1 i2 H_i1eqi2).
 pattern i2 at 2 in |- *; rewrite (eq_Max i2 i1);
- [ idtac | symmetry  in |- *; trivial with v62 ].
+ [ idtac | symmetry  in |- *; trivial with arith ].
 change
   (Choice b1 (Max (Dim (Node i1 h1 l1)) (Dim (Node i2 h2 l2))) false =
    Choice b2 (Max (Dim (Node i2 h2 l2)) (Dim (Node i1 h1 l1))) false) 
@@ -179,7 +179,7 @@ apply trans_equal with b2.
    (* h1 = b2 *)
 replace b2 with (Choice b2 i1 true);
  [ idtac
- | symmetry  in |- *; apply Choice_invariant; elim Def_b2; trivial with v62 ].
+ | symmetry  in |- *; apply Choice_invariant; elim Def_b2; trivial with arith ].
 replace h1 with (Choice b1 i1 true).
 rewrite (gt_Max i1 i2 Hi1supi2).
 change
@@ -193,7 +193,7 @@ symmetry  in |- *; elim Def_b1; apply Choice_left.
 symmetry  in |- *.
 replace b2 with (Choice b2 i1 false);
  [ idtac
- | symmetry  in |- *; apply Choice_invariant; elim Def_b2; trivial with v62 ].
+ | symmetry  in |- *; apply Choice_invariant; elim Def_b2; trivial with arith ].
 replace l1 with (Choice b1 i1 false).
 rewrite (gt_Max i1 i2 Hi1supi2).
 change
@@ -226,8 +226,8 @@ clear Ht1 Ht2 t1 t2.
 intros b1 b2 HO1 Hd1 HO2 Hd2 m Def_m Hrec_true Hrec_false H_eq.
 apply Choices_eq_bdts_eq with m; try assumption.
 simple induction b;
- [ apply Hrec_true; apply Fun_eq_Fun_choice_eq; trivial with v62
- | apply Hrec_false; apply Fun_eq_Fun_choice_eq; trivial with v62 ].
+ [ apply Hrec_true; apply Fun_eq_Fun_choice_eq; trivial with arith
+ | apply Hrec_false; apply Fun_eq_Fun_choice_eq; trivial with arith ].
 Qed.
 
 Remark Canonicity_BF :
@@ -253,7 +253,7 @@ intros e t1 t2.
 unfold Sh_tree_of in |- *.
 simple induction 1; intros HO1 HF1.
 simple induction 1; intros HO2 HF2.
-apply Canonicity_BF with (f1 := Fun_Bexp e) (f2 := Fun_Bexp e); auto with v62.
+apply Canonicity_BF with (f1 := Fun_Bexp e) (f2 := Fun_Bexp e); auto with arith.
 Qed.
 
 
@@ -274,7 +274,7 @@ elim (eq_BDT_decidable te One).
 (* Case te = One *)
 intro H_is; left.
 unfold Tautology in |- *.
-elim Def_te; rewrite H_is; simpl in |- *; auto with v62.
+elim Def_te; rewrite H_is; simpl in |- *; auto with arith.
 (* Case te =/= One *)
 intro H_isnot; right.
 unfold Tautology in |- *.
@@ -282,6 +282,6 @@ unfold not in |- *; unfold not in H_isnot.
 intro H_absurd.
 apply H_isnot.
 elim Def_te; intros HO HF.
-apply Canonicity_BF with (f1 := Fun te) (f2 := Fun One); try trivial with v62.
-simpl in |- *; apply BF_eq_trans with (f2 := Fun_Bexp e); auto with v62.
+apply Canonicity_BF with (f1 := Fun te) (f2 := Fun One); try trivial with arith.
+simpl in |- *; apply BF_eq_trans with (f2 := Fun_Bexp e); auto with arith.
 Qed.
