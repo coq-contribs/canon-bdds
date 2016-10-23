@@ -56,7 +56,7 @@ Lemma neq_vars_neq_BDTs :
 Proof.
 unfold not in |- *.
 intros i1 i2 Di1i2 h1 h2 l1 l2 H_absurde.
-apply Di1i2; injection H_absurde; trivial with v62.
+apply Di1i2; injection H_absurde; trivial with arith.
 Qed.
 Hint Resolve neq_vars_neq_BDTs.
 
@@ -67,7 +67,7 @@ Lemma neq_left_neq_BDTs :
 Proof.
 unfold not in |- *.
 intros i1 i2 Di1i2 h1 h2 l1 l2 H_absurde.
-apply Di1i2; injection H_absurde; trivial with v62.
+apply Di1i2; injection H_absurde; trivial with arith.
 Qed.
 Hint Resolve neq_left_neq_BDTs.
 
@@ -78,18 +78,18 @@ Lemma neq_right_neq_BDTs :
 Proof.
 unfold not in |- *.
 intros i1 i2 Di1i2 h1 h2 l1 l2 H_absurde.
-apply Di1i2; injection H_absurde; trivial with v62.
+apply Di1i2; injection H_absurde; trivial with arith.
 Qed.
 Hint Resolve neq_right_neq_BDTs.
 
 Lemma eq_BDT_decidable : forall t1 t2 : BDT, {t1 = t2} + {t1 <> t2}.
 Proof.
-simple induction t1; simple induction t2; auto with v62.
+simple induction t1; simple induction t2; auto with arith.
 intros n' y' H1 y0' H2.
 elim (eq_nat_dec n n'); intro H_var; elim (H y'); intro H_left; elim (H0 y0');
- intro H_right; auto with v62.
+ intro H_right; auto with arith.
 (* case equal *)
-elim H_right; elim H_left; elim H_var; left; trivial with v62.
+elim H_right; elim H_left; elim H_var; left; trivial with arith.
 Qed.
 
 Lemma Components_eq_nodes_eq :
@@ -99,7 +99,7 @@ Lemma Components_eq_nodes_eq :
  h1 = h2 -> l1 = l2 -> Node i1 h1 l1 = Node i2 h2 l2.
 Proof.
 intros i1 i2 Hi h1 h2 l1 l2 Hh Hl.
-elim Hi; elim Hh; elim Hl; trivial with v62.
+elim Hi; elim Hh; elim Hl; trivial with arith.
 Qed.
 
 
@@ -125,7 +125,7 @@ Hint Resolve dim_zero dim_one dim_node.
 
 Lemma dim_Dim : forall (d : nat) (bdt : BDT), dim bdt d -> d = Dim bdt.
 Proof.
-simple induction 1; simpl in |- *; auto with v62.
+simple induction 1; simpl in |- *; auto with arith.
 Qed.
 Hint Resolve dim_Dim.
 
@@ -157,15 +157,15 @@ Definition Choice (B : BDT) (i : nat) (b : bool) : BDT :=
 Lemma Choice_invariant :
  forall (t : BDT) (i : nat), i > Dim t -> forall b : bool, t = Choice t i b.
 Proof.
-simple induction t; try trivial with v62.
+simple induction t; try trivial with arith.
 intros d bh Hh bl Hl i Hi.
-unfold Choice in |- *; elim (Compar i d); trivial with v62.
+unfold Choice in |- *; elim (Compar i d); trivial with arith.
 intro H_absurde.
-absurd (i > Dim (Node d bh bl)); trivial with v62.
-simpl in |- *; rewrite H_absurde; trivial with v62.
+absurd (i > Dim (Node d bh bl)); trivial with arith.
+simpl in |- *; rewrite H_absurde; trivial with arith.
 intro H_absurde.
-absurd (i > Dim (Node d bh bl)); trivial with v62.
-simpl in |- *; auto with v62.
+absurd (i > Dim (Node d bh bl)); trivial with arith.
+simpl in |- *; auto with arith.
 Qed.
 
 
@@ -174,9 +174,9 @@ Lemma Choice_left :
 Proof.
 intros i bh bl.
 unfold Choice in |- *; elim (Compar i i);
- [ intro; absurd (i > i); trivial with v62
- | trivial with v62
- | intro; absurd (i > i); trivial with v62 ].  
+ [ intro; absurd (i > i); trivial with arith
+ | trivial with arith
+ | intro; absurd (i > i); trivial with arith ].  
 Qed.
 
 
@@ -186,9 +186,9 @@ Lemma Choice_right :
 Proof.
 intros i bh bl.
 unfold Choice in |- *; elim (Compar i i);
- [ intro; absurd (i > i); trivial with v62
- | trivial with v62
- | intro; absurd (i > i); trivial with v62 ]. 
+ [ intro; absurd (i > i); trivial with arith
+ | trivial with arith
+ | intro; absurd (i > i); trivial with arith ]. 
 Qed.
 
 
@@ -220,7 +220,7 @@ Definition inv_OBDT_dim (bdt : BDT) : Prop :=
 
 Lemma p_inv_OBDT_dim : forall bdt : BDT, OBDT bdt -> inv_OBDT_dim bdt.
 Proof.
-simple induction 1; simpl in |- *; auto with v62.
+simple induction 1; simpl in |- *; auto with arith.
 Qed.
 Hint Resolve p_inv_OBDT_dim.
 
@@ -229,7 +229,7 @@ Lemma dim_node_dim_sons :
  OBDT (Node i bh bl) -> i > Dim bh /\ i > Dim bl.
 Proof.
 intros i bh bl Node_ordered.
-change (inv_OBDT_dim (Node i bh bl)) in |- *; auto with v62.
+change (inv_OBDT_dim (Node i bh bl)) in |- *; auto with arith.
 Qed.
 
 
@@ -240,7 +240,7 @@ Proof.
 intros i bh bl H.
 simpl in |- *.
 elim (dim_node_dim_sons i bh bl H); intros Hh Hl.
-apply gt_le_trans with (m := Dim bh); auto with v62.
+apply gt_le_trans with (m := Dim bh); auto with arith.
 Qed.
 
 
@@ -254,9 +254,9 @@ Lemma Dim_gt_O_node_decomposition :
  forall b : BDT, OBDT b -> Dim b > 0 -> node_decomposition b.
 Proof.
 simple induction b;
- [ simpl in |- *; intros; absurd (0 > 0); auto with v62
- | simpl in |- *; intros; absurd (0 > 0); auto with v62
- | intros i h Hh l Hl HO Hd; apply node_exist with i l h; trivial with v62 ].
+ [ simpl in |- *; intros; absurd (0 > 0); auto with arith
+ | simpl in |- *; intros; absurd (0 > 0); auto with arith
+ | intros i h Hh l Hl HO Hd; apply node_exist with i l h; trivial with arith ].
 Qed.
 
 
@@ -273,7 +273,7 @@ Definition inv_OBDT_order (bdt : BDT) : Prop :=
 
 Lemma p_inv_OBDT_order : forall bdt : BDT, OBDT bdt -> inv_OBDT_order bdt.
 Proof.
-simple induction 1; simpl in |- *; auto with v62.
+simple induction 1; simpl in |- *; auto with arith.
 Qed.
 Hint Resolve p_inv_OBDT_order.
 
@@ -291,7 +291,7 @@ Definition inv_OBDT_neq (bdt : BDT) : Prop :=
 
 Lemma p_inv_OBDT_neq : forall bdt : BDT, OBDT bdt -> inv_OBDT_neq bdt.
 Proof.
-simple induction 1; simpl in |- *; auto with v62.
+simple induction 1; simpl in |- *; auto with arith.
 Qed.
 Hint Resolve p_inv_OBDT_neq.
 
@@ -300,7 +300,7 @@ Lemma ordered_node_neq_sons :
  forall (i : nat) (bh bl : BDT), OBDT (Node i bh bl) -> bh <> bl.
 Proof.
 intros i bh bl Node_ordered.
-change (inv_OBDT_neq (Node i bh bl)) in |- *; auto with v62.
+change (inv_OBDT_neq (Node i bh bl)) in |- *; auto with arith.
 Qed.
 
 
@@ -313,30 +313,30 @@ apply deMorgan_or_not.
 unfold not in |- *; simple induction 1; intros H1 H2; clear H.  
 absurd (bh = bl :>BDT);
  [ exact (ordered_node_neq_sons i bh bl HO)
- | rewrite H1; rewrite H2; trivial with v62 ].
+ | rewrite H1; rewrite H2; trivial with arith ].
 Qed.
 
 Lemma ordered_node_ordered_sons :
  forall (i : nat) (bh bl : BDT), OBDT (Node i bh bl) -> OBDT bh /\ OBDT bl.
 Proof.
 intros i bh bl Node_ordered.
-change (inv_OBDT_order (Node i bh bl)) in |- *; auto with v62.
+change (inv_OBDT_order (Node i bh bl)) in |- *; auto with arith.
 Qed.
 
 Lemma Ordered_node_ordered_restr :
  forall t : BDT,
  OBDT t -> forall i : nat, Dim t <= i -> forall b : bool, OBDT (Choice t i b).
 Proof.
-simple induction 1; [ auto with v62 | auto with v62 | idtac ].
+simple induction 1; [ auto with arith | auto with arith | idtac ].
 clear H t.
 intros bl bh H1l H2l H1h H2h i H1i H2i bl_neq_bh j Hj.
 unfold Choice in |- *; elim (Compar j i);
- [ auto with v62
+ [ auto with arith
  |  (* Case j > i *)
-    intro; simple induction b0; trivial with v62
+    intro; simple induction b0; trivial with arith
  |  (* Case j = i *)
     intro H_absurd;  (* Case i > j *)
-    absurd (Dim (Node i bl bh) > j); auto with v62 ].
+    absurd (Dim (Node i bl bh) > j); auto with arith ].
 Qed.
 
 Lemma Choice_dim_decrease :
@@ -344,16 +344,16 @@ Lemma Choice_dim_decrease :
  OBDT t -> Dim t > 0 -> forall b : bool, Dim t > Dim (Choice t (Dim t) b).
 Proof.
 simple induction 1;
- [ simpl in |- *; intro H_abs; absurd (0 > 0); auto with v62
- | simpl in |- *; intro H_abs; absurd (0 > 0); auto with v62
+ [ simpl in |- *; intro H_abs; absurd (0 > 0); auto with arith
+ | simpl in |- *; intro H_abs; absurd (0 > 0); auto with arith
  | idtac ].
 clear H t.
 intros bl bh HOl Hrecl HOh Hrech i Hi1 Hi2 bh_neq_bl H.
 simpl in |- *.
 elim (Compar i i);
- [ intro H_abs; absurd (i > i); auto with v62
+ [ intro H_abs; absurd (i > i); auto with arith
  | intro Htriv; simple induction b; assumption
- | intro H_abs; absurd (i > i); auto with v62 ].
+ | intro H_abs; absurd (i > i); auto with arith ].
 Qed.
 
 
@@ -382,18 +382,18 @@ elim (Choice_invariant t2 (Maxdim t1 t2));
  | unfold Maxdim in |- *; elim (gt_Max (Dim t1) (Dim t2)); try assumption ].
 apply Max_mon_left; try assumption.
 unfold Maxdim in |- *; elim (gt_Max (Dim t1) (Dim t2)); try assumption.
-apply Choice_dim_decrease; trivial with v62.
+apply Choice_dim_decrease; trivial with arith.
 (*-----  Case  Dim(t1) = Dim(t2) -----*)
 intros D1_eq_D2 b.
 rewrite Def_i.
 unfold Maxdim at 1 2 in |- *.
 apply Max_mon_middle.
-unfold Maxdim in |- *; elim (eq_Max (Dim t1) (Dim t2)); trivial with v62.
-apply Choice_dim_decrease; trivial with v62.
+unfold Maxdim in |- *; elim (eq_Max (Dim t1) (Dim t2)); trivial with arith.
+apply Choice_dim_decrease; trivial with arith.
 unfold Maxdim in |- *; elim (Max_sym (Dim t2) (Dim t1)).
 elim (eq_Max (Dim t2) (Dim t1));
- [ apply Choice_dim_decrease; trivial with v62
- | symmetry  in |- *; trivial with v62 ].
+ [ apply Choice_dim_decrease; trivial with arith
+ | symmetry  in |- *; trivial with arith ].
 (*-----  Case Dim(t1) < Dim(t2) ------*)
 intros D2_gt_D1 b.
 rewrite Def_i.
@@ -406,7 +406,7 @@ rewrite (Max_sym (Dim t1) (Dim t2)).
 elim (gt_Max (Dim t2) (Dim t1)); try assumption.
 unfold Maxdim in |- *.
 apply Max_mon_right; try assumption.
-apply Choice_dim_decrease; trivial with v62.
+apply Choice_dim_decrease; trivial with arith.
 Qed.
 
 
@@ -428,11 +428,11 @@ rewrite (Choice_left i1 h1 l1).
 rewrite (Choice_invariant (Node i2 h2 l2) i1 Hi true).
 pattern i1 at 3 4 in |- *; rewrite (gt_Max i1 i2 Hi).
 apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62 ].
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith ].
 Qed.
 
 
@@ -445,11 +445,11 @@ rewrite (Choice_right i1 h1 l1).
 rewrite (Choice_invariant (Node i2 h2 l2) i1 Hi false).
 pattern i1 at 3 4 in |- *; rewrite (gt_Max i1 i2 Hi).
 apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62 ].
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith ].
 Qed.
 
 Lemma Decrease_n1n2_h1h2 : i1 = i2 -> Max i1 i2 > Max (Dim h1) (Dim h2).
@@ -461,12 +461,12 @@ rewrite (Choice_left i2 h2 l2).
 pattern i1 at 3 in |- *; rewrite Hi; pattern i2 at 2 4 in |- *;
  rewrite (le_Max i1 i2).
 apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62 ].
-elim Hi; trivial with v62.
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith ].
+elim Hi; trivial with arith.
 Qed.
 
 Lemma Decrease_n1n2_l1l2 : i1 = i2 -> Max i1 i2 > Max (Dim l1) (Dim l2).
@@ -478,12 +478,12 @@ rewrite (Choice_right i2 h2 l2).
 pattern i1 at 3 in |- *; rewrite Hi; pattern i2 at 2 4 in |- *;
  rewrite (le_Max i1 i2).
 apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62 ].
-elim Hi; trivial with v62.
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith ].
+elim Hi; trivial with arith.
 Qed.
 
 Lemma Decrease_n1n2_n1h2 : i2 > i1 -> Max i1 i2 > Max i1 (Dim h2).
@@ -494,11 +494,11 @@ rewrite (Choice_left i2 h2 l2).
 rewrite (Choice_invariant (Node i1 h1 l1) i2 Hi true).
 pattern i2 at 2 4 in |- *; rewrite (gt_Max i2 i1 Hi).
 elim (Max_sym i2 i1); apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | rewrite (Max_sym i2 i1); auto with v62 ].
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | rewrite (Max_sym i2 i1); auto with arith ].
 Qed.
 
 Lemma Decrease_n1n2_n1l2 : i2 > i1 -> Max i1 i2 > Max i1 (Dim l2).
@@ -509,11 +509,11 @@ rewrite (Choice_right i2 h2 l2).
 rewrite (Choice_invariant (Node i1 h1 l1) i2 Hi false).
 pattern i2 at 2 4 in |- *; rewrite (gt_Max i2 i1 Hi).
 elim (Max_sym i2 i1); apply Measure_decrease;
- [ trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | trivial with v62
- | apply Dim_node_gt_O; trivial with v62
- | rewrite (Max_sym i2 i1); auto with v62 ].
+ [ trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | trivial with arith
+ | apply Dim_node_gt_O; trivial with arith
+ | rewrite (Max_sym i2 i1); auto with arith ].
 Qed.
 
 End Decrease_induction1.
@@ -539,7 +539,7 @@ Lemma Fun_node_case_left :
  true = A i -> Fun (Node i h l) A = Fun h A.
 Proof.
 intros i h l A.
-simpl in |- *; unfold IF_, F in |- *; simple induction 1; trivial with v62.
+simpl in |- *; unfold IF_, F in |- *; simple induction 1; trivial with arith.
 Qed.
 
 
@@ -548,7 +548,7 @@ Lemma Fun_node_case_right :
  false = A i -> Fun (Node i h l) A = Fun l A.
 Proof.
 intros i h l A.
-simpl in |- *; unfold IF_, F in |- *; simple induction 1; trivial with v62.
+simpl in |- *; unfold IF_, F in |- *; simple induction 1; trivial with arith.
 Qed.
 
 
@@ -564,9 +564,9 @@ simpl in |- *; intros; apply BF_eq_sym; apply eq_f_iff.
 intros j bh H_bh bl H_bl i; simpl in |- *; intro Def_i.
 rewrite <- Def_i.
 elim (Compar j j); intro.
-absurd (j > j); auto with v62. 
+absurd (j > j); auto with arith. 
 apply BF_eq_refl.
-absurd (j > j); auto with v62.
+absurd (j > j); auto with arith.
 Qed.
 
 
@@ -596,12 +596,12 @@ simple induction 1.
 intros.
 apply L_Dep_Var2; simpl in |- *.
 intro b.
-replace FALSE with (Fcst false); auto with v62.
+replace FALSE with (Fcst false); auto with arith.
 (*  Case t=One  *)
 intros.
 apply L_Dep_Var2; simpl in |- *.
 intro b.
-replace TRUE with (Fcst true); auto with v62.
+replace TRUE with (Fcst true); auto with arith.
 (*  Case t=Node(i,th,tl)  *)
 intros th tl HOh Hrec_h HOl Hrec_l i Hil Hih Hneq j Hj.
 apply L_Dep_Var2.
@@ -616,24 +616,24 @@ apply
            else Frestr (Fun tl) j b);
  [ idtac | apply BF_eq_sym; apply Commute_Frestr_IF ].
 apply BF_eq_trans with (f2 := IF F i then Fun th else Fun tl);
- [ auto with v62 | apply BF_eq_congruence_op3 ].
+ [ auto with arith | apply BF_eq_congruence_op3 ].
    (*   (BF_eq (F i) (Frestr (F i) j b)) *)
 pattern (F i) at 1 in |- *.
-elim (Frestr_Fi_j i j) with b; [ trivial with v62 | idtac ].
+elim (Frestr_Fi_j i j) with b; [ trivial with arith | idtac ].
 unfold not in |- *; intro H_absurde.
 simpl in Hj.
 absurd (i > i);
- [ trivial with v62 | pattern i at 1 in |- *; rewrite H_absurde; assumption ].
+ [ trivial with arith | pattern i at 1 in |- *; rewrite H_absurde; assumption ].
    (*   (BF_eq (Fun th) (Frestr (Fun th) j b))  *)
 apply L_Dep_Var1.
 apply Hrec_h.
 simpl in Hj.
-apply gt_trans with i; trivial with v62.
+apply gt_trans with i; trivial with arith.
    (*   (BF_eq (Fun tl) (Frestr (Fun tl) j b))  *)
 apply L_Dep_Var1.
 apply Hrec_l.
 simpl in Hj.
-apply gt_trans with i; trivial with v62.  
+apply gt_trans with i; trivial with arith.  
 Qed.
 
 Remark Fun_sons_dim_nondep :
@@ -643,8 +643,8 @@ Proof.
 intros i h l HO.
 split;
  (apply Dim_is_depvar_max;
-   [ elim (ordered_node_ordered_sons i h l HO); trivial with v62
-   | elim (dim_node_dim_sons i h l HO); trivial with v62 ]).
+   [ elim (ordered_node_ordered_sons i h l HO); trivial with arith
+   | elim (dim_node_dim_sons i h l HO); trivial with arith ]).
 Qed.
 
 Lemma Choice_Fun_eq_Fun_Choice :
@@ -657,17 +657,17 @@ Proof.
 simple induction t.
 (*  t = Zero  *)
 simpl in |- *; intros HO i Hi b.
-replace FALSE with (Fcst false); auto with v62.
+replace FALSE with (Fcst false); auto with arith.
 (*  t = One  *)
 simpl in |- *; intros HO i Hi b.
-replace TRUE with (Fcst true); auto with v62.
+replace TRUE with (Fcst true); auto with arith.
 (*  t = Node(i,h,l)  *)
 intros i h Hrec_h l Hrec_l HO j Hj b.
 simpl in Hj.
 unfold Choice in |- *; elim (Compar j i).
    (* case j > i *)
 intro Hsup.
-apply BF_eq_sym; apply L_Dep_Var1; apply Dim_is_depvar_max; auto with v62.
+apply BF_eq_sym; apply L_Dep_Var1; apply Dim_is_depvar_max; auto with arith.
    (* case j = i *)
 intro Heq; rewrite Heq; simpl in |- *.
 apply
@@ -679,13 +679,13 @@ rewrite Frestr_Fi_i_b.
 elim b; unfold Fcst in |- *; simpl in |- *.
 apply BF_eq_trans with (Frestr (Fun h) i true);
  [ apply BF_eq_sym; apply eq_if_true_f
- | apply BF_eq_sym; apply L_Dep_Var1; trivial with v62 ].
+ | apply BF_eq_sym; apply L_Dep_Var1; trivial with arith ].
 apply BF_eq_trans with (Frestr (Fun l) i false);
  [ apply BF_eq_sym; apply eq_if_false_g
- | apply BF_eq_sym; apply L_Dep_Var1; trivial with v62 ].
+ | apply BF_eq_sym; apply L_Dep_Var1; trivial with arith ].
    (* case j < i *)
 intro Habsurde.
-absurd (i > j); auto with v62.
+absurd (i > j); auto with arith.
 Qed.
 
 Lemma Fun_eq_Fun_choice_eq :
@@ -703,13 +703,13 @@ apply BF_eq_trans with (Frestr (Fun t1) m b).
 apply BF_eq_sym; apply Choice_Fun_eq_Fun_Choice;
  [ assumption
  | rewrite Def_m; unfold Maxdim in |- *; elim (Max_le (Dim t1) (Dim t2));
-    trivial with v62 ].
+    trivial with arith ].
 apply BF_eq_trans with (Frestr (Fun t2) m b).
-apply F_eq_Frestr_eq; trivial with v62.
+apply F_eq_Frestr_eq; trivial with arith.
 apply Choice_Fun_eq_Fun_Choice;
  [ assumption
  | rewrite Def_m; unfold Maxdim in |- *; elim (Max_le (Dim t1) (Dim t2));
-    trivial with v62 ].
+    trivial with arith ].
 Qed.
 
 Lemma Corr_hl_Corr_node :
@@ -730,7 +730,7 @@ apply
   with
     (f2 := IF F i then Op (Fun (Choice b1 i true)) (Fun (Choice b2 i true))
            else Op (Fun (Choice b1 i false)) (Fun (Choice b2 i false))).
-apply BF_eq_congruence_op3; auto with v62.
+apply BF_eq_congruence_op3; auto with arith.
 apply
  BF_eq_trans
   with
@@ -740,7 +740,7 @@ apply
 apply Commute_if_bool_op2; assumption.
 apply BF_eq_congruence_op2; try assumption; apply Shannon_expansion;
  try assumption; rewrite Def_i; unfold Maxdim in |- *;
- elim (Max_le (Dim b1) (Dim b2)); auto with v62.
+ elim (Max_le (Dim b1) (Dim b2)); auto with arith.
 Qed.
 
 

@@ -27,14 +27,14 @@ Definition Ass_eq (A1 A2 : Assign) : Prop := forall i : nat, A1 i = A2 i.
 
 Lemma Ass_eq_refl : forall A : Assign, Ass_eq A A.
 Proof.
-intro A; unfold Ass_eq in |- *; auto with v62.
+intro A; unfold Ass_eq in |- *; auto with arith.
 Qed.
 Hint Resolve Ass_eq_refl.
 
 Lemma Ass_eq_sym : forall A1 A2 : Assign, Ass_eq A1 A2 -> Ass_eq A2 A1.
 Proof.
 intros A1 A2.
-unfold Ass_eq in |- *; auto with v62.
+unfold Ass_eq in |- *; auto with arith.
 Qed.
 Hint Immediate Ass_eq_sym.
 
@@ -43,7 +43,7 @@ Lemma Ass_eq_trans :
 Proof.
 intros A1 A2 A3.
 unfold Ass_eq in |- *; intros H1 H2 i.
-apply trans_equal with (y := A2 i); auto with v62.
+apply trans_equal with (y := A2 i); auto with arith.
 Qed.
  
 (*-----------------------------------------------*)
@@ -56,7 +56,7 @@ Lemma Cases_Assign_i :
  forall (A : Assign) (i : nat), true = A i \/ false = A i.
 Proof.
 intros A i.
-elim (A i); auto with v62.
+elim (A i); auto with arith.
 Qed.
 
 
@@ -76,8 +76,8 @@ Proof.
 intros A i b H.
 apply Extensionality_Assignments.
 unfold Ass_eq, Upd in |- *.
-intro j; elim (eq_nat_dec i j); auto with v62.
-simple induction 1; elim H; trivial with v62.
+intro j; elim (eq_nat_dec i j); auto with arith.
+simple induction 1; elim H; trivial with arith.
 Qed.
 
 
@@ -85,7 +85,7 @@ Lemma L_Assign2 : forall (A : Assign) (i : nat) (b : bool), Upd A i b i = b.
 Proof.
 intros A i b.
 unfold Upd in |- *; elim (eq_nat_dec i i);
- [ trivial with v62 | intro Habs; absurd (i = i); trivial with v62 ].
+ [ trivial with arith | intro Habs; absurd (i = i); trivial with arith ].
 Qed.
 
 
@@ -95,7 +95,7 @@ Lemma L_Assign3 :
 Proof.
 intros A j i Hneq b.
 unfold Upd in |- *; elim (eq_nat_dec j i);
- [ intro Habs; absurd (j = i); assumption | trivial with v62 ].
+ [ intro Habs; absurd (j = i); assumption | trivial with arith ].
 Qed.
 
 
@@ -110,7 +110,7 @@ Definition BF_eq (f1 f2 : BF) : Prop := forall A : Assign, f1 A = f2 A.
 Lemma BF_eq_refl : forall f : BF, BF_eq f f.
 Proof.
 intro f.
-unfold BF_eq in |- *; auto with v62.
+unfold BF_eq in |- *; auto with arith.
 Qed.
 Hint Resolve BF_eq_refl.
 
@@ -118,7 +118,7 @@ Hint Resolve BF_eq_refl.
 Lemma BF_eq_sym : forall f1 f2 : BF, BF_eq f1 f2 -> BF_eq f2 f1.
 Proof.
 intros f1 f2.
-unfold BF_eq in |- *; auto with v62.
+unfold BF_eq in |- *; auto with arith.
 Qed.
 Hint Immediate BF_eq_sym.
 
@@ -129,7 +129,7 @@ Proof.
 intros f1 f2 f3. 
 unfold BF_eq in |- *.
 intros H12 H23 A.
-apply trans_equal with (y := f2 A); auto with v62.
+apply trans_equal with (y := f2 A); auto with arith.
 Qed.
 
 
@@ -159,7 +159,7 @@ intro i.
 unfold BF_eq in |- *.
 intro A.
 unfold IF_, F, TRUE, FALSE in |- *; simpl in |- *.
-elim (A i); auto with v62.
+elim (A i); auto with arith.
 Qed.
 Hint Resolve eq_Fi_if_i.
 
@@ -168,26 +168,26 @@ Lemma eq_f_iff : forall (i : nat) (f : BF), BF_eq f (IF F i then f else f).
 Proof.
 intros i f.
 unfold BF_eq, IF_ in |- *; intro A.
-elim (F i A); trivial with v62.
+elim (F i A); trivial with arith.
 Qed.
 
 
 Lemma eq_if_true_f : forall f g : BF, BF_eq f (IF TRUE then f else g).
 Proof.
-unfold BF_eq in |- *; auto with v62.
+unfold BF_eq in |- *; auto with arith.
 Qed.
 
 
 Lemma eq_if_false_g : forall f g : BF, BF_eq g (IF FALSE then f else g).
 Proof.
-unfold BF_eq in |- *; auto with v62.
+unfold BF_eq in |- *; auto with arith.
 Qed.
 
 
 Lemma TRUE_neutral_AND : forall f : BF, BF_eq (AND TRUE f) f.
 Proof.
 intro f.
-unfold BF_eq, AND in |- *; auto with v62.
+unfold BF_eq, AND in |- *; auto with arith.
 Qed.
 Hint Resolve TRUE_neutral_AND.
 
@@ -195,7 +195,7 @@ Hint Resolve TRUE_neutral_AND.
 Lemma FALSE_absorb_AND : forall f : BF, BF_eq (AND FALSE f) FALSE.
 Proof.
 intro f.
-unfold BF_eq, AND in |- *; auto with v62.
+unfold BF_eq, AND in |- *; auto with arith.
 Qed.
 Hint Resolve FALSE_absorb_AND.
 
@@ -210,7 +210,7 @@ Qed.
 Lemma TRUE_absorb_OR : forall f : BF, BF_eq (OR TRUE f) TRUE.
 Proof.
 intro f.
-unfold BF_eq, OR in |- *; auto with v62.
+unfold BF_eq, OR in |- *; auto with arith.
 Qed.
 Hint Resolve TRUE_absorb_OR.
 
@@ -218,7 +218,7 @@ Hint Resolve TRUE_absorb_OR.
 Lemma FALSE_neutral_OR : forall f : BF, BF_eq (OR FALSE f) f.
 Proof.
 intro f.
-unfold BF_eq, OR in |- *; auto with v62.
+unfold BF_eq, OR in |- *; auto with arith.
 Qed.
 Hint Resolve FALSE_neutral_OR.
 
@@ -250,7 +250,7 @@ Lemma Boolean_AND : Boolean AND.
 Proof.
 unfold Boolean in |- *.
 exists andb.
-unfold AND in |- *; auto with v62.
+unfold AND in |- *; auto with arith.
 Qed.
 Hint Resolve Boolean_AND.
 
@@ -259,7 +259,7 @@ Lemma Boolean_OR : Boolean OR.
 Proof.
 unfold Boolean in |- *.
 exists orb.
-unfold OR in |- *; auto with v62.
+unfold OR in |- *; auto with arith.
 Qed.
 Hint Resolve Boolean_OR.
 
@@ -277,11 +277,11 @@ intro A.
 unfold Boolean in HOp.
 elim HOp.
 intros op Def_op.
-apply trans_equal with (y := op (f1 A) (f2 A)); auto with v62.
-apply trans_equal with (y := op (f'1 A) (f'2 A)); auto with v62.
+apply trans_equal with (y := op (f1 A) (f2 A)); auto with arith.
+apply trans_equal with (y := op (f'1 A) (f'2 A)); auto with arith.
 unfold BF_eq in H1.
 unfold BF_eq in H2.
-elim H1; elim H2; auto with v62.
+elim H1; elim H2; auto with arith.
 Qed.
 
 
@@ -292,7 +292,7 @@ intros f f' H_f_eq_f'.
 unfold BF_eq, NOT in |- *.
 intro A.
 unfold BF_eq in H_f_eq_f'.
-elim (H_f_eq_f' A); auto with v62.
+elim (H_f_eq_f' A); auto with arith.
 Qed.
 
 
@@ -306,7 +306,7 @@ Lemma BF_eq_congruence_op3 :
 Proof.
 unfold BF_eq in |- *.
 intros f1 f'1 H1 f2 f'2 H2 f3 f'3 H3 A.
-unfold IF_ in |- *; elim (H1 A); elim (f1 A); auto with v62.
+unfold IF_ in |- *; elim (H1 A); elim (f1 A); auto with arith.
 Qed.
 
 
@@ -318,7 +318,7 @@ Lemma Commute_if_not :
 Proof.
 intros f g i.
 unfold BF_eq in |- *; intro A.
-unfold IF_, NOT in |- *; simpl in |- *; elim (F i A); auto with v62.
+unfold IF_, NOT in |- *; simpl in |- *; elim (F i A); auto with arith.
 Qed.
 
 
@@ -347,7 +347,7 @@ rewrite
      | true => g1 A
      | false => g2 A
      end)).
-elim (F i A); trivial with v62.
+elim (F i A); trivial with arith.
 Qed.
 
 
@@ -365,7 +365,7 @@ Proof.
 intros f i.
 unfold BF_eq, Frestr, IF_, F in |- *; intro A; simpl in |- *.
 elim (Cases_Assign_i A i); simple induction 1; elim L_Assign1;
- trivial with v62.
+ trivial with arith.
 Qed.
 
 
@@ -374,7 +374,7 @@ Proof.
 intros i b.
 unfold Frestr, Upd, F, Fcst in |- *.
 elim (eq_nat_dec i i);
- [ trivial with v62 | intro H; absurd (i = i); trivial with v62 ].
+ [ trivial with arith | intro H; absurd (i = i); trivial with arith ].
 Qed.
 
 
@@ -383,8 +383,8 @@ Proof.
 intro i.
 unfold Frestr, Upd, F in |- *.
 elim (eq_nat_dec i i);
- [ unfold TRUE in |- *; trivial with v62
- | intro H; absurd (i = i); trivial with v62 ].
+ [ unfold TRUE in |- *; trivial with arith
+ | intro H; absurd (i = i); trivial with arith ].
 Qed.
 
 
@@ -393,8 +393,8 @@ Proof.
 intro i.
 unfold Frestr, Upd, F in |- *.
 elim (eq_nat_dec i i);
- [ unfold FALSE in |- *; trivial with v62
- | intro H; absurd (i = i); trivial with v62 ].
+ [ unfold FALSE in |- *; trivial with arith
+ | intro H; absurd (i = i); trivial with arith ].
 Qed.
 
 
@@ -404,14 +404,14 @@ Proof.
 intros i j H b.
 unfold Frestr, Upd, F in |- *.
 elim (eq_nat_dec j i);
- [ intro Habs; absurd (i = j); auto with v62 | trivial with v62 ].
+ [ intro Habs; absurd (i = j); auto with arith | trivial with arith ].
 Qed.
 
 
 Lemma Restr_Fcst :
  forall (i : nat) (b1 b2 : bool), Frestr (Fcst b1) i b2 = Fcst b1.
 Proof.
-unfold Frestr, Fcst, Upd in |- *; auto with v62.
+unfold Frestr, Fcst, Upd in |- *; auto with arith.
 Qed.
 
 
@@ -422,7 +422,7 @@ Lemma F_eq_Frestr_eq :
 Proof.
 intros f1 f2 H i b.
 unfold BF_eq in H.
-unfold BF_eq, Frestr in |- *; auto with v62.
+unfold BF_eq, Frestr in |- *; auto with arith.
 Qed.
 Hint Resolve F_eq_Frestr_eq.
 
@@ -433,7 +433,7 @@ Lemma Commute_Frestr_IF :
    (IF Frestr f1 i b then Frestr f2 i b else Frestr f3 i b).
 Proof.
 intros f1 f2 f3 i b.
-unfold BF_eq, IF_, Frestr in |- *; trivial with v62.
+unfold BF_eq, IF_, Frestr in |- *; trivial with arith.
 Qed.
 
 
@@ -458,13 +458,13 @@ elim b.
 (*   Case b=true    *)
 apply
  BF_eq_trans with (f2 := IF F i then Frestr f i true else Frestr f i true);
- [ apply BF_eq_congruence_op3; try trivial with v62
+ [ apply BF_eq_congruence_op3; try trivial with arith
  | apply BF_eq_sym; apply eq_f_iff ].
 apply BF_eq_sym; apply Classic; assumption.
 (*   Case b=false   *)
 apply
  BF_eq_trans with (f2 := IF F i then Frestr f i false else Frestr f i false);
- [ apply BF_eq_congruence_op3; try trivial with v62
+ [ apply BF_eq_congruence_op3; try trivial with arith
  | apply BF_eq_sym; apply eq_f_iff ].
 apply Classic; assumption.
 Qed.
@@ -476,7 +476,7 @@ Proof.
 intros f i H.
 unfold Dep_Var in |- *.
 apply P_notnotP.
-apply BF_eq_trans with (f2 := f); auto with v62.
+apply BF_eq_trans with (f2 := f); auto with arith.
 Qed.
 
 Lemma Fcst_no_depvar : forall (i : nat) (b : bool), ~ Dep_Var (Fcst b) i.
@@ -484,7 +484,7 @@ Proof.
 intros i b.
 apply L_Dep_Var2.
 intro b'.
-rewrite (Restr_Fcst i b b'); trivial with v62.
+rewrite (Restr_Fcst i b b'); trivial with arith.
 Qed.
 
 Lemma FB12 :
@@ -503,9 +503,9 @@ intros i f1 Hf1 f2 Hf2 g1 Hg1 g2 Hg2 H.
 split.
 (*    (BF_eq f1 g1)    *)
 apply BF_eq_trans with (f2 := Frestr f1 i true);
- [ apply L_Dep_Var1; trivial with v62 | idtac ].      
+ [ apply L_Dep_Var1; trivial with arith | idtac ].      
 apply BF_eq_trans with (f2 := Frestr g1 i true);
- [ idtac | apply BF_eq_sym; apply L_Dep_Var1; trivial with v62 ].
+ [ idtac | apply BF_eq_sym; apply L_Dep_Var1; trivial with arith ].
 apply
  BF_eq_trans with (f2 := IF TRUE then Frestr f1 i true else Frestr f2 i true);
  [ apply eq_if_true_f | idtac ].
@@ -517,12 +517,12 @@ apply BF_eq_trans with (f2 := Frestr (IF F i then f1 else f2) i true);
  [ apply BF_eq_sym; apply Commute_Frestr_IF | idtac ].
 apply BF_eq_trans with (f2 := Frestr (IF F i then g1 else g2) i true);
  [ idtac | apply Commute_Frestr_IF ].
-apply F_eq_Frestr_eq; trivial with v62.
+apply F_eq_Frestr_eq; trivial with arith.
 (*    (BF_eq f2 g2)    *)
 apply BF_eq_trans with (f2 := Frestr f2 i false);
- [ apply L_Dep_Var1; trivial with v62 | idtac ].
+ [ apply L_Dep_Var1; trivial with arith | idtac ].
 apply BF_eq_trans with (f2 := Frestr g2 i false);
- [ idtac | apply BF_eq_sym; apply L_Dep_Var1; trivial with v62 ]. 
+ [ idtac | apply BF_eq_sym; apply L_Dep_Var1; trivial with arith ]. 
 apply
  BF_eq_trans
   with (f2 := IF FALSE then Frestr f1 i false else Frestr f2 i false);
@@ -536,7 +536,7 @@ apply BF_eq_trans with (f2 := Frestr (IF F i then f1 else f2) i false);
  [ apply BF_eq_sym; apply Commute_Frestr_IF | idtac ].
 apply BF_eq_trans with (f2 := Frestr (IF F i then g1 else g2) i false);
  [ idtac | apply Commute_Frestr_IF ].
-apply F_eq_Frestr_eq; trivial with v62.
+apply F_eq_Frestr_eq; trivial with arith.
 Qed. 
 
 Remark FB12bis :
