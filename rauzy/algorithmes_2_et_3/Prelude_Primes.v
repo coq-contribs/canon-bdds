@@ -29,14 +29,14 @@ Lemma Prime_implicant :
  forall (p : Path) (f : BF), Prime p f -> Implicant p f.
 Proof.
 unfold Prime in |- *.
-simple induction 1; auto with v62.
+simple induction 1; auto with arith.
 Qed.
 Hint Resolve Prime_implicant.
 
 Lemma Prime_ordered : forall (p : Path) (f : BF), Prime p f -> Ordered p.
 Proof.
 intros p f Hp.
-elim (inv_Implicant p f (Prime_implicant p f Hp)); auto with v62.
+elim (inv_Implicant p f (Prime_implicant p f Hp)); auto with arith.
 Qed.
 
 Lemma No_prime_FALSE : forall p : Path, ~ Prime p FALSE.
@@ -51,7 +51,7 @@ Lemma Nil_prime_of_TRUE : Prime Nil TRUE.
 Proof.
 unfold Prime in |- *.
 split;
- [ apply Implicants_TRUE; trivial with v62
+ [ apply Implicants_TRUE; trivial with arith
  | intros p H1p H2p; exact (Nil_divides_all p) ].
 Qed.
 
@@ -62,7 +62,7 @@ unfold Prime in |- *.
 simple induction 1; intros H1 H2; clear H.
 apply (incl_nil_eq nat); change (Divides p Nil) in |- *.
 apply H2;
- [ apply Implicants_TRUE; trivial with v62 | exact (Nil_divides_all p) ].
+ [ apply Implicants_TRUE; trivial with arith | exact (Nil_divides_all p) ].
 Qed.
 
 
@@ -73,9 +73,9 @@ Lemma Vars_prime_le_dim :
  OBDT b -> forall p : Path, Prime p (Fun b) -> Head p <= Dim b.
 Proof.
 intros b HO p Hp.
-elim (le_or_lt (Head p) (Dim b)); [ trivial with v62 | intro Habsurde ].
+elim (le_or_lt (Head p) (Dim b)); [ trivial with arith | intro Habsurde ].
 elim (Nil_or_not_Nil p);
- [ intro H; rewrite H; auto with v62 | simple induction 1; intros i Hi ].
+ [ intro H; rewrite H; auto with arith | simple induction 1; intros i Hi ].
 absurd (Of (Head p) p); [ idtac | exact (Head_of_p_in_p p i Hi) ].
 apply Contra with (Of (Head p) (Sub p (Head p)));
  [ idtac | exact (I_out_of_Sub_ip p (Head p)) ].
@@ -109,9 +109,9 @@ Proof.
 intros i h l HO p Def_p.
 apply Cons_ordered;
  [ exact (Prime_ordered p (Fun h) Def_p) | apply gt_le_trans with (Dim h) ].
-elim (dim_node_dim_sons i h l HO); auto with v62.
+elim (dim_node_dim_sons i h l HO); auto with arith.
 apply Vars_prime_le_dim;
- [ elim (ordered_node_ordered_sons i h l HO); auto with v62 | assumption ].
+ [ elim (ordered_node_ordered_sons i h l HO); auto with arith | assumption ].
 Qed.
 
 
@@ -135,7 +135,7 @@ unfold not in |- *; intros j H1j H2j.
 absurd (Of j (Sub p j));
  [ exact (I_out_of_Sub_ip p j) | unfold Divides at 2 in H2 ].
 apply H2;
- [ apply L14bis; auto with v62
+ [ apply L14bis; auto with arith
  | unfold Divides in |- *; exact (Of_sub_pi_of_p p j)
  | assumption ].
 Qed.
@@ -165,7 +165,7 @@ elim (Tail_exists p i Hi); intros p' Def_p'.
 exists p'; split; [ rewrite (Lc_4bis Def_p Hi); assumption | idtac ]. 
 rewrite (Lc_4bis Def_p Hi).
 rewrite <- Def_p'. 
-elim (inv_Implicant p (Fun (Node i h l)) H1); auto with v62.
+elim (inv_Implicant p (Fun (Node i h l)) H1); auto with arith.
 Qed.
 
 Remark Le_4bis :
@@ -176,7 +176,7 @@ Remark Le_4bis :
 Proof.
 intros p1 Hp p' H1p' H2p'.
 apply Cons_ordered;
- [ elim (inv_Implicant p' (Fun h) H1p'); auto with v62 | idtac ].
+ [ elim (inv_Implicant p' (Fun h) H1p'); auto with arith | idtac ].
 elim (Nil_or_not_Nil p').
      (* Case p'=Nil *)
 intro Def_p'; rewrite Def_p'; simpl in |- *.
@@ -184,9 +184,9 @@ exact (Dim_node_gt_O i h l HO).
     (* Case p'=/=Nil *)
 simple induction 1; intros k Def_k.
 apply gt_le_trans with (Head p1).
-elim (p_inv_Ordered (Cons i p1) Hp); auto with v62.
+elim (p_inv_Ordered (Cons i p1) Hp); auto with arith.
 apply Head_max_of_ordered_path.
-elim (p_inv_Ordered (Cons i p1) Hp); auto with v62.
+elim (p_inv_Ordered (Cons i p1) Hp); auto with arith.
 unfold Divides in H2p'.
 apply H2p'.
 apply Head_of_p_in_p with k; assumption.
@@ -204,10 +204,10 @@ clear Def_p; intro Def_p.
 elim (Ld_4bis Def_p Hi).
 intros p' Hp'.
 elim Hp'; intros Def_p' H.
-exists p'; split; [ elim Hp'; auto with v62 | idtac ].
+exists p'; split; [ elim Hp'; auto with arith | idtac ].
 unfold Prime in |- *; split.
 (*--- (Implicant p' (Fun h)) ---*)
-apply L40 with i l; [ auto with v62 | idtac ].
+apply L40 with i l; [ auto with arith | idtac ].
 rewrite <- Def_p'; assumption.
 (*--- p' least implicant of (Fun h) ---*)
 intros p'' H1p'' H2p''.
@@ -216,10 +216,10 @@ apply Divides_cons_divides_tail with i; [ assumption | idtac | idtac ].
 exact (Le_4bis p' H p'' H1p'' H2p'').
 (* (Divides (Cons i p') (Cons i p'')) *)
 elim Def_p'; apply H2.
-apply L2; auto with v62.
+apply L2; auto with arith.
 elim (p_inv_Ordered (Cons i p'') (Le_4bis p' H p'' H1p'' H2p''));
- auto with v62.
-rewrite Def_p'; apply Divides_tail_divides_cons; trivial with v62.
+ auto with arith.
+rewrite Def_p'; apply Divides_tail_divides_cons; trivial with arith.
 Qed.
 
 Lemma L5bis : Prime p (Fun (Node i h l)) -> ~ Of i p -> Prime p (Fun l).
@@ -229,7 +229,7 @@ unfold Prime in Def_p; elim Def_p; intros H1 H2; clear Def_p.
 unfold Prime in |- *; split;
  [ apply L5 with i h; assumption | intros p' H1p' H2p' ].
 apply H2;
- [ apply L10; [ apply L80 with p; trivial with v62 | assumption ]
+ [ apply L10; [ apply L80 with p; trivial with arith | assumption ]
  | assumption ].
 Qed.
 
@@ -241,13 +241,13 @@ unfold Prime in Def_p; elim Def_p; intros H1 H2; clear Def_p.
 absurd (Of i p).
 (*  ~(Of i p)  *)
 apply L11.
-elim (inv_Implicant (Cons i p) (Fun (Node i h l)) H1); auto with v62.
+elim (inv_Implicant (Cons i p) (Fun (Node i h l)) H1); auto with arith.
 (*   (Of i p)  *) 
 unfold Divides at 2 in H2.
-apply H2; [ idtac | unfold Divides in |- *; auto with v62 | auto with v62 ].
-apply L10; auto with v62.
+apply H2; [ idtac | unfold Divides in |- *; auto with arith | auto with arith ].
+apply L10; auto with arith.
 apply L11.
-elim (inv_Implicant (Cons i p) (Fun (Node i h l)) H1); auto with v62.
+elim (inv_Implicant (Cons i p) (Fun (Node i h l)) H1); auto with arith.
 Qed.
 
 End Node_to_Sons.
@@ -271,9 +271,9 @@ split.
   (* p Implicant of Fun(Node) *)
 apply (L10 i h l p); try assumption.
 apply (Dim_highest_var_of_prime l);
- [ elim (ordered_node_ordered_sons i h l HO); auto with v62
- | unfold Prime in |- *; auto with v62
- | elim (dim_node_dim_sons i h l HO); auto with v62 ].
+ [ elim (ordered_node_ordered_sons i h l HO); auto with arith
+ | unfold Prime in |- *; auto with arith
+ | elim (dim_node_dim_sons i h l HO); auto with arith ].
   (* p smallest *)
 intros p' H1p' H2p'.
 apply H2p; try assumption.
@@ -281,9 +281,9 @@ apply (L5 i h l p' H1p').
 apply Contra with (Of i p);
  [ unfold Divides in H2p'; exact (H2p' i) | idtac ].
 apply (Dim_highest_var_of_prime l);
- [ elim (ordered_node_ordered_sons i h l HO); auto with v62
- | unfold Prime in |- *; auto with v62
- | elim (dim_node_dim_sons i h l HO); auto with v62 ].
+ [ elim (ordered_node_ordered_sons i h l HO); auto with arith
+ | unfold Prime in |- *; auto with arith
+ | elim (dim_node_dim_sons i h l HO); auto with arith ].
 Qed.
 
 Lemma Prime_h_prime_node :
@@ -297,10 +297,10 @@ unfold Prime in |- *; split.
 (* Implicant *)
 apply (L2 i h l HO p H1p_impl).
 apply gt_le_trans with (Dim h);
- [ elim (dim_node_dim_sons i h l HO); trivial with v62
+ [ elim (dim_node_dim_sons i h l HO); trivial with arith
  | apply Vars_prime_le_dim ].
-elim (ordered_node_ordered_sons i h l); auto with v62.
-unfold Prime in |- *; auto with v62.
+elim (ordered_node_ordered_sons i h l); auto with arith.
+unfold Prime in |- *; auto with arith.
 (* smallest *)
 intros p' H1p' H2p'.
 elim (Of_path_dec p' i); intro Cas.
@@ -308,16 +308,16 @@ elim (Of_path_dec p' i); intro Cas.
 elim (Ordered_divisor_of_cons_ip i p) with p';
  [ intros tl' Def_tl'
  | apply (Prime_h_cons_ip_ordered i h l HO); unfold Prime in |- *;
-    auto with v62
+    auto with arith
  | assumption
- | elim (inv_Implicant p' (Fun (Node i h l)) H1p'); auto with v62
+ | elim (inv_Implicant p' (Fun (Node i h l)) H1p'); auto with arith
  | assumption ].
 rewrite Def_tl'; apply Divides_tail_divides_cons.
 apply H1p_min;
  [ apply (L40 i h l HO); elim Def_tl'; assumption
  | apply Divides_cons_divides_tail with i ].
-elim Def_tl'; elim (inv_Implicant p' (Fun (Node i h l)) H1p'); auto with v62.
-apply (Prime_h_cons_ip_ordered i h l HO); unfold Prime in |- *; auto with v62.
+elim Def_tl'; elim (inv_Implicant p' (Fun (Node i h l)) H1p'); auto with arith.
+apply (Prime_h_cons_ip_ordered i h l HO); unfold Prime in |- *; auto with arith.
 elim Def_tl'; assumption.
   (*-- i not in p' --*)
 absurd (Implicant p (Fun l));
@@ -325,7 +325,7 @@ absurd (Implicant p (Fun l));
 assumption.
 exact (L5 i h l p' H1p' Cas).
 exact (L8 p' p i H2p' Cas).
-elim (inv_Implicant p (Fun h) H1p_impl); auto with v62.
+elim (inv_Implicant p (Fun h) H1p_impl); auto with arith.
 Qed.
 
 End Sons_to_Node.
@@ -335,7 +335,7 @@ Lemma Prime_exists :
 Proof.
 simple induction 1.
 (* b=Zero *)
-simple induction 1; trivial with v62.
+simple induction 1; trivial with arith.
 (* b=One  *)
 intro H1; exists Nil; simpl in |- *; exact Nil_prime_of_TRUE.
 (* b=Node *)
@@ -346,19 +346,19 @@ elim (eq_BDT_decidable bl Zero); intro Cas_bl.
 elim (eq_BDT_decidable bh Zero); intro Cas_bh.
       (*-- bh=Zero --*) 
 absurd (bh = bl);
- [ assumption | rewrite Cas_bh; rewrite Cas_bl; trivial with v62 ].
+ [ assumption | rewrite Cas_bh; rewrite Cas_bl; trivial with arith ].
       (*-- bh=/=Zero --*)
 elim (Hrec_bh Cas_bh); intros ph Def_ph. 
 exists (Cons i ph).
 apply (Prime_h_prime_node i bh bl) with (p := ph);
- [ auto with v62
+ [ auto with arith
  | assumption
  | rewrite Cas_bl; simpl in |- *; exact (Fcst_monotonic false)
  | rewrite Cas_bl; simpl in |- *; exact (No_implicant_FALSE ph) ].
   (*-- bl=/=Zero --*)
 elim (Hrec_bl Cas_bl); intros pl Def_pl. 
 exists pl.
-apply (Prime_l_prime_node i bh bl) with (p := pl); auto with v62. 
+apply (Prime_l_prime_node i bh bl) with (p := pl); auto with arith. 
 Qed.
 
 
