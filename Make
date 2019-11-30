@@ -14,7 +14,7 @@ rauzy/algorithme1/Formula_to_BDT.v
 rauzy/algorithme1/Canonicity.v
 rauzy/algorithme1/Boolean_functions.v
 rauzy/algorithme1/BDTs.v
--extra rauzy/algorithme1/extraction/suresnes.ml rauzy/algorithme1/Formula_to_BDT.vo "$(COQBIN)coqtop $(COQFLAGS) -silent -batch -load-vernac-source rauzy/algorithme1/extract.v"
+-extra rauzy/algorithme1/extraction/suresnes.ml rauzy/algorithme1/Formula_to_BDT.vo "$(COQBIN)coqtop $(COQFLAGS) -R . CanonBDDs -silent -batch -load-vernac-source rauzy/algorithme1/extract.v"
 -extra rauzy/algorithme1/extraction/suresnes rauzy/algorithme1/extraction/suresnes.ml
        "$(MAKE) -C rauzy/algorithme1/extraction all"
 -extra test rauzy/algorithme1/extraction/suresnes
